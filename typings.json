@@ -4,6 +4,7 @@
   "globalDependencies": {
     "lodash": "registry:dt/lodash#4.14.0+20160830145422",
     "moment": "registry:dt/moment#2.11.1+20160829143156",
+    "native-base": "github:mrphu3074/typed-native-base#cf8cffbc134055490f8fbdd5ae705b42a704c7d8",
     "node": "registry:dt/node#6.0.0+20160915134512",
     "react": "registry:dt/react#0.14.0+20160817201227",
     "react-native": "registry:dt/react-native#0.29.0+20160728152643",

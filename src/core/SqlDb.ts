@@ -276,12 +276,14 @@ export class SqlDb {
         //console.log(this.dialect);
         console.log(req.sql);
 
+
         return fetch('http://192.168.10.143:3000', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
+            timeout:5000,
             body: JSON.stringify(req)
         })
             .then((response) => {

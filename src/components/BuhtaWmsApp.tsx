@@ -3,6 +3,7 @@ import {View, Text, Navigator, Route, fetch as IFetch} from "react-native";
 import {BuhtaMenu} from "./BuhtaMenu";
 import {getDb} from "../core/getDb";
 import {DataTable} from "../core/SqlDb";
+import {Button, Icon} from "native-base";
 //import BuhtaMenu from "./BuhtaMenu";
 //import * as RN from "react-native";
 // See src/declarations.d.ts
@@ -23,6 +24,7 @@ export default class BuhtaWmsApp extends Component<any, any> {
                        <Text style={{ fontSize: 20 }}>
                           Hello2 {route.title}!
                        </Text>
+                       <Button success> Пока 123 <Icon name='ios-star' /> Привет</Button>
                        <BuhtaMenu items={
                           [
                             {title:this.x, onPress:()=>{console.log(this.x);this.x+="*";this.forceUpdate()}},
@@ -41,7 +43,7 @@ export default class BuhtaWmsApp extends Component<any, any> {
 declare var fetch: IFetch;
 
 function testSql() {
-   // alert("testSql-X");
+    // alert("testSql-X");
 
     // let a:any = [];
     // for (let i = 0; i < 10; i++)
@@ -74,7 +76,7 @@ function testSql() {
     //         console.error(error);
     //     });
 
-    let x = getDb().executeSQL(["select  top 100 Номер, Название from ТМЦ","select  top 10 Номер, Название from ТМЦ"])
+    let x = getDb().executeSQL(["select  top 100 Номер, Название from ТМЦ", "select  top 10 Номер, Название from ТМЦ"])
         .then((tables: DataTable[])=> {
             alert("select ok");
 
