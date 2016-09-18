@@ -1,6 +1,7 @@
 package com.reactnativets;
 
 import com.facebook.react.ReactActivity;
+//import com.wmjmc.reactspeech.VoicePackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -12,4 +13,12 @@ public class MainActivity extends ReactActivity {
     protected String getMainComponentName() {
         return "ReactNativeTS";
     }
+
+//    @Override
+  //  protected List<ReactPackage> getPackages() {
+    //   return Arrays.<ReactPackage>asList(
+      //   new MainReactPackage(),
+        // new VoicePackage()); // <--- added here
+    //}
+
 }

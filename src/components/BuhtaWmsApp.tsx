@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, Navigator, Route, fetch as IFetch} from "react-native";
+import {View, Text, Navigator, Route, fetch as IFetch, NativeModules} from "react-native";
 import {BuhtaMenu} from "./BuhtaMenu";
 import {getDb} from "../core/getDb";
 import {DataTable} from "../core/SqlDb";
@@ -9,22 +9,26 @@ import {Button, Icon} from "native-base";
 // See src/declarations.d.ts
 //import Button from "react-native-button";
 
+//import SpeechAndroid from "react-native-android-voice";
+
+
+var ttt: string = "Глав-меню";
 
 export default class BuhtaWmsApp extends Component<any, any> {
-    x: string = "Пункт меню 1";
+    x: string = "эТо меню";
 
     render() {
         return (
             <Navigator
                 sceneStyle={{padding: 10}}
-                initialRoute={{ title: 'Главное меню 9', index: 0 }}
+                initialRoute={{ title: ttt, index: 0 }}
                 renderScene={(route:Route, navigator:Navigator) => {
                     return (
                     <View >
                        <Text style={{ fontSize: 20 }}>
                           Hello2 {route.title}!
                        </Text>
-                       <Button success> Пока 123 <Icon name='ios-star' /> Привет</Button>
+                       <Button success onPress={()=>{testVoice(this)}} > Пока 123 <Icon name='ios-star' /> Привет</Button>
                        <BuhtaMenu items={
                           [
                             {title:this.x, onPress:()=>{console.log(this.x);this.x+="*";this.forceUpdate()}},
@@ -41,6 +45,38 @@ export default class BuhtaWmsApp extends Component<any, any> {
 
 
 declare var fetch: IFetch;
+
+function testVoice(comp: Component<any,any>) {
+    //  alert("test-voice");
+
+    let SpeechAndroid = NativeModules.SpeechAndroid;
+
+    NativeModules.SpeechAndroid.startSpeech("говори", SpeechAndroid.RUSSIAN)
+        .then((text: string)=> {
+            console.log(text);
+            ttt=text;
+            comp.forceUpdate();
+        })
+        .catch((error: any)=> {
+            console.log(error);
+            ttt=error.toString();
+            comp.forceUpdate();
+        });
+
+
+    //switch (error) {
+    // case SpeechAndroid.E_VOICE_CANCELLED:
+    //     ToastAndroid.show("Voice Recognizer cancelled" , ToastAndroid.LONG);
+    //     break;
+    // case SpeechAndroid.E_NO_MATCH:
+    //     ToastAndroid.show("No match for what you said" , ToastAndroid.LONG);
+    //     break;
+    // case SpeechAndroid.E_SERVER_ERROR:
+    //     ToastAndroid.show("Google Server Error" , ToastAndroid.LONG);
+    //     break;
+    // /*And more errors that will be documented on Docs upon release*/
+    //}
+}
 
 function testSql() {
     // alert("testSql-X");
