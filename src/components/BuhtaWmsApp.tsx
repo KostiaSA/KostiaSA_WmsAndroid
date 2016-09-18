@@ -18,6 +18,7 @@ export default class BuhtaWmsApp extends Component<any, any> {
     x: string = "эТо меню";
 
     render() {
+        console.log("render BuhtaWmsApp");
         return (
             <Navigator
                 sceneStyle={{padding: 10}}
@@ -26,9 +27,10 @@ export default class BuhtaWmsApp extends Component<any, any> {
                     return (
                     <View >
                        <Text style={{ fontSize: 20 }}>
-                          Hello2 {route.title}!
+                          {ttt}!
                        </Text>
-                       <Button success onPress={()=>{testVoice(this)}} > Пока 123 <Icon name='ios-star' /> Привет</Button>
+                       <Button success onPress={()=>{testVoice(this)}} > Пока 123 <Icon name='ios-star' /> </Button>
+                       <Button success onPress={()=>{testVoice2(this)}} > Новая слушалка <Icon name='ios-star' /> </Button>
                        <BuhtaMenu items={
                           [
                             {title:this.x, onPress:()=>{console.log(this.x);this.x+="*";this.forceUpdate()}},
@@ -44,38 +46,77 @@ export default class BuhtaWmsApp extends Component<any, any> {
 }
 
 
+import Voice from 'react-native-voice';
+
+let voice = Voice as any;
+
+function onSpeechError(e: any) {
+    console.error(e);
+    // this.setState({
+    //     error: e.error,
+    // });
+}
+
+function onSpeechResults(e: any) {
+    console.log("res:" + e.value[0]);
+    ttt = e.value[0];
+    this.forceUpdate();
+    console.log(this);
+    // this.setState({
+    //     results: e.value,
+    // });
+}
+function onSpeechPartialResults(e: any) {
+    if (e.value[0].toString().length > 0)
+        console.log("res-part:" + e.value[0]);
+    // this.setState({
+    //     results: e.value,
+    // });
+}
+
 declare var fetch: IFetch;
+function testVoice2(comp: Component<any,any>) {
+
+    voice.onSpeechError = onSpeechError.bind(comp);
+    voice.onSpeechResults = onSpeechResults.bind(comp);
+    voice.onSpeechPartialResults = onSpeechPartialResults.bind(comp);
+
+    const error = voice.start('ru');
+    if (error) {
+        console.error(error);
+    }
+}
 
 function testVoice(comp: Component<any,any>) {
-    //  alert("test-voice");
-
-    let SpeechAndroid = NativeModules.SpeechAndroid;
-
-    NativeModules.SpeechAndroid.startSpeech("говори", SpeechAndroid.RUSSIAN)
-        .then((text: string)=> {
-            console.log(text);
-            ttt=text;
-            comp.forceUpdate();
-        })
-        .catch((error: any)=> {
-            console.log(error);
-            ttt=error.toString();
-            comp.forceUpdate();
-        });
-
-
-    //switch (error) {
-    // case SpeechAndroid.E_VOICE_CANCELLED:
-    //     ToastAndroid.show("Voice Recognizer cancelled" , ToastAndroid.LONG);
-    //     break;
-    // case SpeechAndroid.E_NO_MATCH:
-    //     ToastAndroid.show("No match for what you said" , ToastAndroid.LONG);
-    //     break;
-    // case SpeechAndroid.E_SERVER_ERROR:
-    //     ToastAndroid.show("Google Server Error" , ToastAndroid.LONG);
-    //     break;
-    // /*And more errors that will be documented on Docs upon release*/
-    //}
+    // //  alert("test-voice");
+    //
+    // let SpeechAndroid = NativeModules.SpeechAndroid;
+    //
+    // NativeModules.SpeechAndroid.startSpeech("говори", SpeechAndroid.RUSSIAN)
+    //     .then((text: string)=> {
+    //         console.log(text);
+    //         ttt=text;
+    //         comp.forceUpdate();
+    //     })
+    //     .catch((error: any)=> {
+    //         console.log(error);
+    //         ttt=error.toString();
+    //         comp.forceUpdate();
+    //     });
+    //
+    //
+    // //switch (error) {
+    // // case SpeechAndroid.E_VOICE_CANCELLED:
+    // //     ToastAndroid.show("Voice Recognizer cancelled" , ToastAndroid.LONG);
+    // //     break;
+    // // case SpeechAndroid.E_NO_MATCH:
+    // //     ToastAndroid.show("No match for what you said" , ToastAndroid.LONG);
+    // //     break;
+    // // case SpeechAndroid.E_SERVER_ERROR:
+    // //     ToastAndroid.show("Google Server Error" , ToastAndroid.LONG);
+    // //     break;
+    // // /*And more errors that will be documented on Docs upon release*/
+    // //}
 }
 
 function testSql() {
