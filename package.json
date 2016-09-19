@@ -16,6 +16,7 @@
     "react": "^15.3.1",
     "react-native": "^0.32.0",
     "react-native-android-voice": "^0.3.0",
+    "react-native-barcodescanner": "^3.1.1",
     "react-native-button": "^1.6.0",
     "react-native-socketio": "^0.3.0",
     "react-native-voice": "^0.1.6",

@@ -8,6 +8,7 @@ import {throwError} from "./Error";
 // import {SelectStmt} from "./SelectStmt";
 // import {SqlDialect, SqlStmt} from "./SqlCore";
 import {getConnectionId} from "./getConnectionId";
+import {getBuhtaServerAddress} from "./config";
 //import {checkAuth} from "./Auth";
 //import {socket} from "./Socket";
 // import {DesignedObject} from "../buhta-app-designer/DesignedObject";
@@ -277,7 +278,7 @@ export class SqlDb {
         console.log(req.sql);
 
 
-        return fetch('http://192.168.10.143:3000', {
+        return fetch('http://'+getBuhtaServerAddress(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

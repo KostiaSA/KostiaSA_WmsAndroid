@@ -1,9 +1,12 @@
 import React, {Component} from "react";
-import {View, Text, Navigator, Route, fetch as IFetch, NativeModules} from "react-native";
+import {View, Text, Navigator, Route, fetch as IFetch, NativeModules, AppRegistry, Vibration, BackAndroid} from "react-native";
 import {BuhtaMenu} from "./BuhtaMenu";
 import {getDb} from "../core/getDb";
 import {DataTable} from "../core/SqlDb";
 import {Button, Icon} from "native-base";
+
+import BarcodeScannerView from "react-native-barcodescanner";
+
 //import BuhtaMenu from "./BuhtaMenu"; xxx
 //import * as RN from "react-native";
 // See src/declarations.d.ts
@@ -17,20 +20,42 @@ var ttt: string = "Глав-меню";
 export default class BuhtaWmsApp extends Component<any, any> {
     x: string = "эТо меню";
 
+    barcodeReceived(e: any) {
+        // if (e.data !== this.state.barcode || e.type !== this.state.type) Vibration.vibrate();
+        BackAndroid.exitApp();
+       // Vibration.vibrate(10,true);
+        //alert(e.data);
+        // this.setState({
+        //     barcode: e.data,
+        //     text: `${e.data} (${e.type})`,
+        //     type: e.type,
+        // });
+    }
+
     render() {
         console.log("render BuhtaWmsApp");
+        console.log(BarcodeScannerView);
+        let BarcodeScanner = BarcodeScannerView as any;
         return (
             <Navigator
                 sceneStyle={{padding: 10}}
                 initialRoute={{ title: ttt, index: 0 }}
                 renderScene={(route:Route, navigator:Navigator) => {
                     return (
-                    <View >
+                    <View style={{flex: 1, flexDirection: 'column'}}>
                        <Text style={{ fontSize: 20 }}>
                           {ttt}!
                        </Text>
                        <Button success onPress={()=>{testVoice(this)}} > Пока 123 <Icon name='ios-star' /> </Button>
                        <Button success onPress={()=>{testVoice2(this)}} > Новая слушалка <Icon name='ios-star' /> </Button>
+                            <BarcodeScanner
+                                onBarCodeRead={this.barcodeReceived.bind(this)}
+                                showViewFinder={true}
+                                viewFinderShowLoadingIndicator={false}
+                                style={{ height:400, width:300 }}
+                                torchMode={'off'}
+                                cameraType={'back'}
+                            />
                        <BuhtaMenu items={
                           [
                             {title:this.x, onPress:()=>{console.log(this.x);this.x+="*";this.forceUpdate()}},
@@ -44,6 +69,12 @@ export default class BuhtaWmsApp extends Component<any, any> {
         );
     }
 }
+// <BarcodeScannerView
+//     onBarCodeRead={this.barcodeReceived.bind(this)}
+//     style={{ flex: 1 }}
+//     torchMode={'off'}
+//     cameraType={'back'}
+// />
 
 
 import Voice from 'react-native-voice';
@@ -164,3 +195,5 @@ function testSql() {
 
 
 }
+
+//AppRegistry.registerComponent('BarcodeScanner', () => BuhtaWmsApp);
