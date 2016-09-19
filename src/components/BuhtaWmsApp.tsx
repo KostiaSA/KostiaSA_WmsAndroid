@@ -4,7 +4,7 @@ import {BuhtaMenu} from "./BuhtaMenu";
 import {getDb} from "../core/getDb";
 import {DataTable} from "../core/SqlDb";
 import {Button, Icon} from "native-base";
-//import BuhtaMenu from "./BuhtaMenu";
+//import BuhtaMenu from "./BuhtaMenu"; xxx
 //import * as RN from "react-native";
 // See src/declarations.d.ts
 //import Button from "react-native-button";
