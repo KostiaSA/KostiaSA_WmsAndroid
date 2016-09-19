@@ -26,6 +26,7 @@ export interface ExecuteSqlSocketRequest {
     sql: string;
 }
 
+// todo добавить ключ сервера, и перадать hash(sql)
 export interface ExecuteSqlBatchSocketRequest {
     dbName: string;
     sql: string[];
