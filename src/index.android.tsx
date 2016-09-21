@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, TouchableNativeFeedback} from "react-native";
 
 import HelloWorld from "./components/HelloWorld/index";
 import BuhtaWmsApp from "./components/BuhtaWmsApp";
+import BuhtaWmsAppNavigator from "./components/BuhtaWmsAppNavigator";
 
 interface Props {
 
@@ -14,10 +15,8 @@ interface State {
 
 export default class App extends Component<Props, State> {
 
-    
-
     render() {
-        return <BuhtaWmsApp/>
+        return <BuhtaWmsAppNavigator/>
         // return (
         //     <View style={styles.container}>
         //         <Text style={styles.welcome}>
