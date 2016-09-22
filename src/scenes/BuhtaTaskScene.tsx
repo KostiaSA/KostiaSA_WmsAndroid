@@ -5,8 +5,8 @@ import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./Buht
 import {getDb} from "../core/getDb";
 import {DataTable, DataRow} from "../core/SqlDb";
 
-import { Col, Row, Grid } from 'react-native-easy-grid';
-​
+import {Col, Row, Grid} from 'react-native-easy-grid';
+
 
 let Text = Text_ as any;
 
@@ -69,6 +69,7 @@ WHERE
                     this.steps.push(step);
                 }, this);
 
+                this.isStepsLoaded = true;
                 if (this.isMounted)
                     this.scene.forceUpdate();
             });
@@ -98,10 +99,44 @@ export class TaskStep {
 
 export class TaskStep_Приемка extends TaskStep {
 
+
     renderIncompleteStep(): JSX.Element {
+
+        let firstColStyle = {width: 65};
+        let captionStyle = {color: "gray"};
+        let actionStyle = {color: "coral"};
         return (
             <View>
-                <Text>шаг {this.objectName}</Text>
+                <View>
+                    <Grid>
+                        <Col style={firstColStyle}>
+                            <Text style={captionStyle}>опер.</Text>
+                        </Col>
+                        <Col>
+                            <Text style={actionStyle}>приемка товара</Text>
+                        </Col>
+                    </Grid>
+                </View>
+                <View>
+                    <Grid>
+                        <Col style={firstColStyle}>
+                            <Text style={captionStyle}>товар</Text>
+                        </Col>
+                        <Col>
+                            <Text style={{ color:"slategray", lineHeight:16}}>{this.objectName}</Text>
+                        </Col>
+                    </Grid>
+                </View>
+                <View>
+                    <Grid>
+                        <Col style={firstColStyle}>
+                            <Text style={captionStyle}>кол-во</Text>
+                        </Col>
+                        <Col>
+                            <Text style={{ color:"royalblue"}}>{this.kol} шт.</Text>
+                        </Col>
+                    </Grid>
+                </View>
             </View>
         );
     }
@@ -121,7 +156,9 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
 
     componentDidMount = () => {
         this.state.isMounted = true;
-        this.state.loadIncompletedStepsFromSql();
+        setTimeout(()=> {
+            this.state.loadIncompletedStepsFromSql();
+        }, 200);
     };
 
 
@@ -142,12 +179,18 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
             )
         });
 
-
-        return (
-            <List>
-                {steps}
-            </List>
-        );
+        if (this.state.isStepsLoaded)
+            return (
+                <List>
+                    {steps}
+                </List>
+            );
+        else
+            return (
+                <Text>
+                    загрузка...
+                </Text>
+            );
 
     }
 

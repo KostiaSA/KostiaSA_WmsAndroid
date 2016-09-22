@@ -1,0 +1,9 @@
+export const COLOR_LIGHT = 0xfff;
+export const COLOR_STABLE = 0xf8f8f8;
+export const COLOR_BLUE = 0x387ef5;
+export const COLOR_CYAN =0x11c1f3;
+export const COLOR_GREEN =0x33cd5f
+export const COLOR_YELLOW =0xffc900;
+export const COLOR_RED =0xef473a;
+export const COLOR_FIOLET =0x886aea;
+export const COLOR_DARK =0x444444;
