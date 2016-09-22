@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Route} from "react-native";
+import {View, Route, ListView} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./BuhtaCoreScene";
 
@@ -17,11 +17,10 @@ export class BuhtaMainMenuScene extends Component<IBuhtaMainMenuSceneProps, IBuh
     renderTest = (): JSX.Element[]=> {
         let Text = Text_ as any;
         let ret: JSX.Element[] = [];
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 150; i++) {
             ret.push(
                 <ListItem key={i}>
-                    <Text>Задания в работе {i}</Text>
-                    <Badge>{i}</Badge>
+                    <Text>Задания в работе {i} бля</Text>
                 </ListItem>
             );
         }
@@ -33,7 +32,7 @@ export class BuhtaMainMenuScene extends Component<IBuhtaMainMenuSceneProps, IBuh
         console.log("render BuhtaScene");
         return (
             <BuhtaCoreScene navigator={this.props.navigator} title="Главное меню" backIcon="ios-power">
-                <List>
+                <List initialListSize={2}>
                     <ListItem iconLeft>
                         <Icon name='ios-chatboxes'/>
                         <Text>Задания в работе</Text>
@@ -54,7 +53,6 @@ export class BuhtaMainMenuScene extends Component<IBuhtaMainMenuSceneProps, IBuh
                         <Text>Привязка штрих-кода</Text>
                         <Icon name='ios-mic-outline'/>
                     </ListItem>
-                    {this.renderTest()}
                 </List>
             </BuhtaCoreScene>);
     }

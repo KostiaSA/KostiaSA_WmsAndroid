@@ -16,7 +16,7 @@ export interface IBuhtaLoginSceneState extends  IBuhtaCoreSceneState{
 export class BuhtaLoginScene extends Component<IBuhtaCoreSceneProps, IBuhtaLoginSceneState> {
 
     handleOkButtonPress=()=>{
-        let mainMenuRoute:Route={component:BuhtaMainMenuScene, sceneConfig:Navigator.SceneConfigs.FadeAndroid}
+        let mainMenuRoute:Route={component:BuhtaMainMenuScene};//, sceneConfig:Navigator.SceneConfigs.FadeAndroid};
         this.props.navigator.push(mainMenuRoute);
     }
 
