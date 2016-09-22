@@ -12,24 +12,44 @@ let Text = Text_ as any;
 
 export type TaskAction ="подбор" | "размещение" | "приемка";
 
+export interface IPlacesConfig {
+    allowedSubcontos: string[];
+    allowedCount: "none" | "single" | "multi";
+    title: string;
+}
+
 export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
     taskId: number;
     userId: number;
     action: TaskAction;
+    sourcePlacesConfig: IPlacesConfig;
+    targetPlacesConfig: IPlacesConfig;
+    stepsTitle: string;
 }
+
+export interface IPlaceState {
+    type: string;
+    Id: number;
+    isActive: boolean;
+}
+
 
 export class BuhtaTaskSceneState implements IBuhtaCoreSceneState {
     isMounted: boolean;
     scene: BuhtaTaskScene;
     props: IBuhtaTaskSceneProps;
-    fromPlaceType: string | undefined;
-    fromPlaceId: number  | undefined;
-    intoPlaceType: string  | undefined;
-    intoPlaceId: number  | undefined;
+
+    fromPlaces: IPlaceState[];
+    intoPlaces: IPlaceState[];
+
     steps: TaskStep[] = [];
 
     handleBarcodeScan(barcode: string) {
 
+    }
+
+    handleTargetPlaceClick(placeIndex: number) {
+        alert(placeIndex);
     }
 
     isStepsLoaded: boolean;
@@ -182,29 +202,55 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
         if (this.state.isStepsLoaded)
             return (
                 <List>
+                    <ListItem itemDivider>
+                        <Text style={{ color:"dimgray"}}>{this.props.stepsTitle.toUpperCase()}</Text>
+                    </ListItem>
                     {steps}
                 </List>
             );
         else
             return (
-                <Text>
-                    загрузка...
-                </Text>
+                <List>
+                    <ListItem itemDivider>
+                        <Text style={{ color:"dimgray"}}>{this.props.stepsTitle.toUpperCase()}</Text>
+                    </ListItem>
+                    <Text> загрузка... </Text>
+                </List>
             );
 
     }
 
 
-    renderTest = (): JSX.Element[]=> {
+    // renderTest = (): JSX.Element[]=> {
+    //     let ret: JSX.Element[] = [];
+    //     for (let i = 0; i < 1; i++) {
+    //         ret.push(
+    //             <ListItem key={i}>
+    //                 <Text>Паллета {i} бля</Text>
+    //             </ListItem>
+    //         );
+    //     }
+    //     return ret;
+    // }
+
+
+    renderTargets = (): JSX.Element => {
         let ret: JSX.Element[] = [];
-        for (let i = 0; i < 150; i++) {
+        for (let i = 0; i <= 1; i++) {
             ret.push(
-                <ListItem key={i}>
-                    <Text>Задания в работе {i} бля</Text>
+                <ListItem key={i} button onPress={()=>{this.state.handleTargetPlaceClick(i)}}>
+                    <Text>Паллета 010{i}</Text>
                 </ListItem>
             );
         }
-        return ret;
+        return (
+            <List>
+                <ListItem itemDivider>
+                    <Text style={{ color:"dimgray"}}>{this.props.targetPlacesConfig.title.toUpperCase()}</Text>
+                </ListItem>
+                {ret}
+            </List>
+        );
     }
 
     render() {
@@ -212,6 +258,7 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
         return (
             <BuhtaCoreScene navigator={this.props.navigator} title={"Задание "+this.props.taskId}>
                 {this.renderTaskHeader()}
+                {this.renderTargets()}
                 {this.renderIncompleteSteps()}
             </BuhtaCoreScene>);
     }

@@ -27,7 +27,14 @@ export class BuhtaLoginScene extends Component<IBuhtaCoreSceneProps, IBuhtaLogin
             taskId: 370683,
             userId: 1,
             action: "приемка",
-            navigator: this.props.navigator
+            navigator: this.props.navigator,
+            sourcePlacesConfig: {allowedSubcontos: [], allowedCount: "none", title: ""},
+            targetPlacesConfig: {
+                allowedSubcontos: ["PAL", "CEL"],
+                allowedCount: "single",
+                title: "Куда принимаем товар"
+            },
+            stepsTitle: "Список товара"
         }
 
         let mainMenuRoute: Route = {component: BuhtaTaskScene, passProps: sceneProps};//, sceneConfig:Navigator.SceneConfigs.FadeAndroid};
