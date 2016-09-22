@@ -1,11 +1,12 @@
 import React, {Component} from "react";
-import {View, Route, ListView} from "react-native";
+import {View, Route, ListView, TouchableHighlight, TouchableNativeFeedback} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./BuhtaCoreScene";
 import {getDb} from "../core/getDb";
 import {DataTable, DataRow} from "../core/SqlDb";
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
+import {pushSpeak} from "../core/speak";
 
 
 let Text = Text_ as any;
@@ -49,7 +50,8 @@ export class BuhtaTaskSceneState implements IBuhtaCoreSceneState {
     }
 
     handleTargetPlaceClick(placeIndex: number) {
-        alert(placeIndex);
+        pushSpeak("выбрана палета 12" + placeIndex + ".");
+        //alert(placeIndex);
     }
 
     isStepsLoaded: boolean;
@@ -140,7 +142,11 @@ export class TaskStep_Приемка extends TaskStep {
                 <View>
                     <Grid>
                         <Col style={firstColStyle}>
-                            <Text style={captionStyle}>товар</Text>
+                            <TouchableNativeFeedback onPress={(()=>{pushSpeak(this.objectName)}).bind(this)}>
+                                <View>
+                                    <Text style={captionStyle}>товар</Text>
+                                </View>
+                            </TouchableNativeFeedback>
                         </Col>
                         <Col>
                             <Text style={{ color:"slategray", lineHeight:16}}>{this.objectName}</Text>

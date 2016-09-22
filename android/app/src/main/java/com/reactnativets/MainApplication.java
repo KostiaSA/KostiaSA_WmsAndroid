@@ -16,6 +16,7 @@ import java.util.List;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.wenkesj.voice.VoicePackage;
 import com.eguma.barcodescanner.BarcodeScannerPackage;
+import com.mihir.react.tts.*;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -31,7 +32,8 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new VectorIconsPackage(),
             new VoicePackage(),
-            new BarcodeScannerPackage()
+            new BarcodeScannerPackage(),
+            new RCTTextToSpeechModule()
       );
     }
   };
