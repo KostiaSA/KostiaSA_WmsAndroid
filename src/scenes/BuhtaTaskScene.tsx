@@ -2,6 +2,13 @@ import React, {Component} from "react";
 import {View, Route, ListView} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./BuhtaCoreScene";
+import {getDb} from "../core/getDb";
+import {DataTable, DataRow} from "../core/SqlDb";
+
+import { Col, Row, Grid } from 'react-native-easy-grid';
+​
+
+let Text = Text_ as any;
 
 export type TaskAction ="подбор" | "размещение" | "приемка";
 
@@ -27,9 +34,9 @@ export class BuhtaTaskSceneState implements IBuhtaCoreSceneState {
 
     isStepsLoaded: boolean;
 
-    loadIncompletedStepsFromSql(){
+    loadIncompletedStepsFromSql() {
 
-        let sql=`
+        let sql = `
 SELECT 
    Счет,
    МестоТип,
@@ -43,13 +50,28 @@ SELECT
    СотрудникТип,
    Сотрудник,
    Количество,
-   dbo.  ОбъектНазвание,
+   dbo.СубконтоНазвание(МестоТип,Место) МестоНазвание,
+   dbo.СубконтоНазвание(ОбъектТип,Объект) ОбъектНазвание
    
 FROM Остаток
 WHERE 
    ЗаданиеТип='Док' AND Задание=${this.props.taskId} AND
    ((СотрудникТип='Чел' AND Сотрудник=${this.props.userId}) OR (СотрудникТип='Нет') )  
         `;
+
+        getDb().executeSQL(sql)
+            .then((tables: DataTable[])=> {
+                this.steps.length = 0;
+                tables[0].rows.forEach((row: DataRow)=> {
+                    let step = new TaskStep_Приемка();
+                    step.objectName = row["ОбъектНазвание"];
+                    step.kol = row["Количество"];
+                    this.steps.push(step);
+                }, this);
+
+                if (this.isMounted)
+                    this.scene.forceUpdate();
+            });
 
 
     }
@@ -67,6 +89,23 @@ export class TaskStep {
     intoPlaceType: string;
     intoPlaceId: number;
     intoPlaceName: number;
+    kol: number;
+
+    renderIncompleteStep(): JSX.Element {
+        return <Text> ошибка render </Text>;
+    }
+}
+
+export class TaskStep_Приемка extends TaskStep {
+
+    renderIncompleteStep(): JSX.Element {
+        return (
+            <View>
+                <Text>шаг {this.objectName}</Text>
+            </View>
+        );
+    }
+
 }
 
 export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSceneState> {
@@ -82,16 +121,38 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
 
     componentDidMount = () => {
         this.state.isMounted = true;
+        this.state.loadIncompletedStepsFromSql();
     };
 
 
-    renderIncompleteSteps():JSX.Element {
+    renderTaskHeader(): JSX.Element {
+        return (
+            <Text> Шапка задания {this.props.taskId} </Text>
+        )
+    }
+
+    renderIncompleteSteps(): JSX.Element {
+
+        let steps = this.state.steps.map((step: TaskStep, index: number)=> {
+            return (
+                <ListItem key={index}>
+                    {step.renderIncompleteStep()}
+                </ListItem>
+
+            )
+        });
+
+
+        return (
+            <List>
+                {steps}
+            </List>
+        );
 
     }
 
 
     renderTest = (): JSX.Element[]=> {
-        let Text = Text_ as any;
         let ret: JSX.Element[] = [];
         for (let i = 0; i < 150; i++) {
             ret.push(
@@ -104,32 +165,11 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
     }
 
     render() {
-        let Text = Text_ as any;
         console.log("render BuhtaScene");
         return (
             <BuhtaCoreScene navigator={this.props.navigator} title={"Задание "+this.props.taskId}>
-                <List initialListSize={2}>
-                    <ListItem iconLeft>
-                        <Icon name='ios-chatboxes'/>
-                        <Text>Задания в работе</Text>
-                        <Badge>3</Badge>
-                    </ListItem>
-                    <ListItem iconLeft>
-                        <Icon name='ios-alarm'/>
-                        <Text>Задания ждут</Text>
-                        <Badge>12</Badge>
-                    </ListItem>
-                    <ListItem iconLeft>
-                        <Icon name='ios-notifications'/>
-                        <Text>Печать этикетки</Text>
-                        <Text note>не надо</Text>
-                    </ListItem>
-                    <ListItem iconLeft iconRight>
-                        <Icon name='ios-mic'/>
-                        <Text>Привязка штрих-кода</Text>
-                        <Icon name='ios-mic-outline'/>
-                    </ListItem>
-                </List>
+                {this.renderTaskHeader()}
+                {this.renderIncompleteSteps()}
             </BuhtaCoreScene>);
     }
 }

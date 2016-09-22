@@ -1,6 +1,8 @@
 # Typescript
 build
 typings
+!typings/globals/buhta
+!typings/globals/*.ts
 
 # OSX
 #

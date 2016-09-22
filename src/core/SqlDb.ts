@@ -9,6 +9,7 @@ import {throwError} from "./Error";
 // import {SqlDialect, SqlStmt} from "./SqlCore";
 import {getConnectionId} from "./getConnectionId";
 import {getBuhtaServerAddress} from "./config";
+import {showDevError} from "./showDevError";
 //import {checkAuth} from "./Auth";
 //import {socket} from "./Socket";
 // import {DesignedObject} from "../buhta-app-designer/DesignedObject";
@@ -279,13 +280,13 @@ export class SqlDb {
         console.log(req.sql);
 
 
-        return fetch('http://'+getBuhtaServerAddress(), {
+        return fetch('http://' + getBuhtaServerAddress(), {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            timeout:5000,
+            timeout: 5000,
             body: JSON.stringify(req)
         })
             .then((response) => {
@@ -296,7 +297,7 @@ export class SqlDb {
             .then((json: ExecuteSqlBatchSocketAnswer) => {
 
                 if (json.error) {
-                    throw json.error+"\n\n"+json.errorSql;
+                    throw json.error + "\n\n" + json.errorSql;
                 }
                 else {
 
@@ -399,7 +400,9 @@ export class SqlDb {
                     return dataTables;
                 }
             })
-
+            .catch((err)=> {
+                showDevError(err);
+            })
 
         // socket.emit("executeSqlBatch", req);
         //
