@@ -7,7 +7,6 @@ import {DataTable, DataRow} from "../core/SqlDb";
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {pushSpeak} from "../core/speak";
-import {barcodeScanner} from "../core/BarcodeScanner";
 
 
 let Text = Text_ as any;
@@ -201,7 +200,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         this.state = new BuhtaTaskSceneState(props, this);
     }
 
-    componentDidMount () {
+    componentDidMount() {
         super.componentDidMount();
         this.state.loadIncompletedStepsFromSql();
     };
@@ -284,7 +283,8 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
             <BuhtaCoreScene
                 navigator={this.props.navigator}
                 title={"Задание "+this.props.taskId}
-                onGetBarcode={()=>{ alert(barcodeScanner.scannedBarcode); }}
+                onGetBarcode={(barcode: string, type: string)=>{ this.state.scannedBarcode=barcode; }}
+                onGetVoiceText={( text: string)=>{ this.state.scannedVoiceText=text; }}
             >
                 {this.renderTaskHeader()}
                 {this.renderTargets()}

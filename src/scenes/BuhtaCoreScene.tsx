@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import {Container, Button, Icon, Header, Title, Content} from "native-base";
 import {themeBuhtaMain} from "../themes/themeBuhtaMain";
-import {barcodeScanner} from "../core/BarcodeScanner";
+
 import {stringAsSql} from "../core/SqlCore";
 import {getDb} from "../core/getDb";
 import {DataTable} from "../core/SqlDb";
@@ -16,11 +16,16 @@ import {DataTable} from "../core/SqlDb";
 import BarcodeScannerView from "react-native-barcodescanner";
 import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
 
+import Voice from 'react-native-voice';
+import {throwError} from "../core/Error";
+let voice = Voice as any;
+
 export interface IBuhtaCoreSceneProps extends React.ClassAttributes<any> {
     navigator: Navigator;
     title?: string;
     backIcon?: string;
-    onGetBarcode?: ()=>void;
+    onGetBarcode?: (barcode: string, type: string)=>void;
+    onGetVoiceText?: (text: string)=>void;
 }
 
 export class BuhtaCoreSceneState<TProps extends IBuhtaCoreSceneProps> {
@@ -28,16 +33,21 @@ export class BuhtaCoreSceneState<TProps extends IBuhtaCoreSceneProps> {
         this.props = props;
         this.scene = scene;
         this.barcodeButtonVisible = _.isFunction(props.onGetBarcode);
+        this.voiceButtonVisible = _.isFunction(props.onGetVoiceText);
     }
+
     isMounted: boolean;
     scene: any;
     props: TProps;
     barcodeButtonVisible: boolean;
+    voiceButtonVisible: boolean;
 
     scannedBarcode: string;
     scannedBarcodeType: string;
     scannedSubcontoType: string;
     scannedSubcontoId: number;
+
+    scannedVoiceText: string;
 
     findSubcontoByBarcode(): Promise<void> {
         let sql = `EXEC ПолучитьСубконтоПоШтрихКоду ${stringAsSql(this.scannedBarcode)}`;
@@ -71,15 +81,23 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
         //alert(barcodeScanner);
 
         this.openCameraScanner(this.props.navigator)
-            .then(()=> {
-                this.props.onGetBarcode();
+            .then((result: {barcode: string,type: string})=> {
+                this.props.onGetBarcode(result.barcode, result.type);
             });
     }
 
-    openCameraScanner(navigator: Navigator): Promise<void> {
+    handleVoiceButtonPress = () => {
 
-        return new Promise<void>(
-            (resolve: () => void, reject: (error: string) => void) => {
+        this.openVoiceScanner(this.props.navigator)
+            .then((text: string) => {
+                this.props.onGetVoiceText(text);
+            });
+    }
+
+    openCameraScanner(navigator: Navigator): Promise<{barcode: string,type: string}> {
+
+        return new Promise<{barcode: string,type: string}>(
+            (resolve: (result: {barcode: string,type: string}) => void, reject: (error: string) => void) => {
 
                 let sceneProps: IBuhtaBarcodeScannerSceneProps = {
                     navigator: navigator,
@@ -88,7 +106,7 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
                         this.state.scannedBarcodeType = type;
                         this.state.findSubcontoByBarcode()
                             .then(()=> {
-                                resolve();
+                                resolve({barcode, type});
                             });
                     }
                 }
@@ -104,11 +122,50 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
 
     }
 
+    openVoiceScanner(navigator: Navigator): Promise<string> {
+
+        return new Promise<string>(
+            (resolve: (text: string) => void, reject: (error: string) => void) => {
+
+                let sceneProps: IBuhtaVoiceScannerSceneProps = {
+                    navigator: navigator,
+                    onVoiceScanned: (text: string)=> {
+                        this.state.scannedVoiceText = text;
+                        resolve(text);
+                        // this.state.findSubcontoByBarcode()
+                        //     .then(()=> {
+                        //         resolve({barcode, type});
+                        //     });
+                    }
+                }
+
+                let route: Route = {
+                    component: BuhtaVoiceScannerScene,
+                    passProps: sceneProps,
+                    sceneConfig: getNavigatorNoTransition()
+                };
+                navigator.push(route);
+            });
+
+
+    }
+
     renderBarcodeButton(): JSX.Element | null {
         if (this.state.barcodeButtonVisible)
             return (
                 <Button transparent onPress={this.handleBarcodeButtonPress}>
-                    <Icon style={{fontSize: 18, color: "white"}} name='barcode'/>
+                    <Icon style={{fontSize: 18, color: "white"}} name="barcode"/>
+                </Button>
+            );
+        else
+            return null;
+    }
+
+    renderVoiceButton(): JSX.Element | null {
+        if (this.state.voiceButtonVisible)
+            return (
+                <Button transparent onPress={this.handleVoiceButtonPress}>
+                    <Icon style={{fontSize: 18, color: "white"}} name="microphone"/>
                 </Button>
             );
         else
@@ -144,17 +201,15 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
         return (
             <Container theme={themeBuhtaMain}>
                 <Header>
-                    <Button transparent onPress={() => {this.navigatorAnimationIsDone = false; this.props.navigator.pop()}}>
+                    <Button transparent
+                            onPress={() => {this.navigatorAnimationIsDone = false; this.props.navigator.pop()}}>
                         <Icon style={{fontSize: 18, color: "white"}} name={this.props.backIcon || "chevron-left"}/>
                     </Button>
 
                     <Title>{this.props.title}</Title>
 
                     {this.renderBarcodeButton()}
-
-                    <Button transparent>
-                        <Icon style={{fontSize: 18, color: "white"}} name='microphone'/>
-                    </Button>
+                    {this.renderVoiceButton()}
 
                     <Button transparent>
                         <Icon style={{fontSize: 18, color: "white"}} name="bars"/>
@@ -197,10 +252,14 @@ export class IBuhtaBarcodeScannerSceneState extends BuhtaCoreSceneState<IBuhtaBa
 
 export class BuhtaBarcodeScannerScene extends BuhtaCoreScene<IBuhtaBarcodeScannerSceneProps, IBuhtaBarcodeScannerSceneState> {
 
+    closingState: boolean;
 
     handleBarcodeReceived = (e: any) => {
-        this.props.onBarcodeScanned(e.data, e.type);
-        this.props.navigator.pop();
+        if (!this.closingState) {
+            this.props.onBarcodeScanned(e.data, e.type);
+            this.props.navigator.pop();
+            this.closingState = true;  // BarcodeScanner выдает несколько раз подряд одно и тоже значение, обрубаем
+        }
     }
 
     render() {
@@ -211,10 +270,67 @@ export class BuhtaBarcodeScannerScene extends BuhtaCoreScene<IBuhtaBarcodeScanne
                     onBarCodeRead={this.handleBarcodeReceived}
                     showViewFinder={true}
                     viewFinderShowLoadingIndicator={false}
-                    style={{ height:400, width:300 }}
+                    style={{ height:400 }}
                     torchMode={'off'}
                     cameraType={'back'}
                 />
+            </BuhtaCoreScene>);
+    }
+}
+
+export interface IBuhtaVoiceScannerSceneProps extends IBuhtaCoreSceneProps {
+    onVoiceScanned: (text: string)=>void;
+}
+
+export class IBuhtaVoiceScannerSceneState extends BuhtaCoreSceneState<IBuhtaVoiceScannerSceneProps> {
+
+}
+
+export class BuhtaVoiceScannerScene extends BuhtaCoreScene<IBuhtaVoiceScannerSceneProps, IBuhtaVoiceScannerSceneState> {
+
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        voice.onSpeechError = (e: any)=> {
+            console.log(e);
+            throw e;
+        };
+
+        voice.onSpeechResults = (e: any)=> {
+            console.log(e);
+            let text = e.value[0];
+            if (!this.closingState) {
+                this.props.onVoiceScanned(e.value[0]);
+                this.props.navigator.pop();
+                this.closingState = true;
+            }
+        };
+
+        voice.onSpeechPartialResults = (e: any)=> {
+            console.log(e);
+            let text = e.value[0];
+            if (text.toString().length > 0) {
+                this.partialText = text;
+                this.forceUpdate();
+            }
+        };
+
+        const error = voice.start('ru');
+        if (error) {
+            throw error;
+        }
+
+    };
+
+    partialText: string = "Говорите...";
+
+    closingState: boolean;
+
+    render() {
+        return (
+            <BuhtaCoreScene navigator={this.props.navigator} title="Чтение штрих-кода">
+                <Text>{this.partialText}</Text>
             </BuhtaCoreScene>);
     }
 }
