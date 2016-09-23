@@ -4,22 +4,17 @@ import {Button, Icon} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./BuhtaCoreScene";
 import {BuhtaMainMenuScene} from "./BuhtaMainMenuScene";
 import {BuhtaTaskScene, IBuhtaTaskSceneProps} from "./BuhtaTaskScene";
+import BarcodeScannerView from "react-native-barcodescanner";
 
+export interface IBuhtaBarcodeScannerSceneProps extends IBuhtaCoreSceneProps {
+    onBarcodeScanned: (barcode: string, type: string)=>void;
+}
 
-export interface IBuhtaLoginSceneProps extends IBuhtaCoreSceneProps {
+export interface IBuhtaBarcodeScannerSceneState extends IBuhtaCoreSceneState {
 
 }
 
-export interface IBuhtaLoginSceneState extends IBuhtaCoreSceneState {
-
-}
-
-export class BuhtaLoginScene extends Component<IBuhtaCoreSceneProps, IBuhtaLoginSceneState> {
-
-    handleOkButtonPress = ()=> {
-        let mainMenuRoute: Route = {component: BuhtaMainMenuScene};//, sceneConfig:Navigator.SceneConfigs.FadeAndroid};
-        this.props.navigator.push(mainMenuRoute);
-    }
+export class BuhtaBarcodeScannerScene extends Component<IBuhtaBarcodeScannerSceneProps, IBuhtaBarcodeScannerSceneState> {
 
     handleTestTaskButtonPress = ()=> {
 
@@ -42,16 +37,23 @@ export class BuhtaLoginScene extends Component<IBuhtaCoreSceneProps, IBuhtaLogin
         this.props.navigator.push(mainMenuRoute);
     }
 
-    render() {
-        console.log("render BuhtaScene");
-        return (
-            <BuhtaCoreScene navigator={this.props.navigator} title="Авторизация" backIcon="ios-person">
-                <Text style={{ fontSize: 20 }}>
-                    Войдите в систему!
-                </Text>
-                <Button success onPress={this.handleOkButtonPress}>Войти</Button>
-                <Button success onPress={this.handleTestTaskButtonPress}>Тест task</Button>
 
+    handleBarcodeReceived = (e: any) => {
+        this.props.onBarcodeScanned(e.data, e.type);
+    }
+
+    render() {
+        let BarcodeScanner = BarcodeScannerView as any;
+        return (
+            <BuhtaCoreScene navigator={this.props.navigator} title="Чтение штрих-кода">
+                <BarcodeScanner
+                    onBarCodeRead={this.handleBarcodeReceived}
+                    showViewFinder={true}
+                    viewFinderShowLoadingIndicator={false}
+                    style={{ height:400, width:300 }}
+                    torchMode={'off'}
+                    cameraType={'back'}
+                />
             </BuhtaCoreScene>);
     }
 }

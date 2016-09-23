@@ -17,6 +17,7 @@ export interface IPlacesConfig {
     allowedSubcontos: string[];
     allowedCount: "none" | "single" | "multi";
     title: string;
+    placesNotReadyErrorMessage: string;
 }
 
 export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
@@ -40,10 +41,30 @@ export class BuhtaTaskSceneState implements IBuhtaCoreSceneState {
     scene: BuhtaTaskScene;
     props: IBuhtaTaskSceneProps;
 
-    fromPlaces: IPlaceState[];
-    intoPlaces: IPlaceState[];
+    sourcePlaces: IPlaceState[];
+    targetPlaces: IPlaceState[];
 
     steps: TaskStep[] = [];
+
+    isSourcePlacesStateOk(): boolean {
+        if (this.props.sourcePlacesConfig.allowedCount === "none")
+            return true;
+        if (this.props.sourcePlacesConfig.allowedCount !== "single" && this.sourcePlaces.length === 1)
+            return true;
+        if (this.props.sourcePlacesConfig.allowedCount !== "multi" && this.sourcePlaces.length >= 1)
+            return true;
+        return false;
+    }
+
+    isTargetPlacesStateOk(): boolean {
+        if (this.props.targetPlacesConfig.allowedCount === "none")
+            return true;
+        if (this.props.targetPlacesConfig.allowedCount !== "single" && this.targetPlaces.length === 1)
+            return true;
+        if (this.props.targetPlacesConfig.allowedCount !== "multi" && this.targetPlaces.length >= 1)
+            return true;
+        return false;
+    }
 
     handleBarcodeScan(barcode: string) {
 
