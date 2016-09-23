@@ -6,6 +6,7 @@ import {
     Route
 } from "react-native";
 import {Container, Button, Icon, Header, Title, Content} from "native-base";
+import {themeBuhtaMain} from "../themes/themeBuhtaMain";
 
 
 export interface IBuhtaCoreSceneProps extends React.ClassAttributes<any> {
@@ -22,16 +23,24 @@ export class BuhtaCoreScene extends Component<IBuhtaCoreSceneProps,IBuhtaCoreSce
     render() {
         console.log("render BuhtaScene");
         return (
-            <Container>
+            <Container theme={themeBuhtaMain}>
                 <Header>
                     <Button transparent onPress={() => this.props.navigator.pop()}>
-                        <Icon name={this.props.backIcon || "ios-arrow-back"} />
+                        <Icon style={{fontSize: 18, color: "white"}} name={this.props.backIcon || "chevron-left"} />
                     </Button>
 
                     <Title>{this.props.title}</Title>
 
                     <Button transparent>
-                        <Icon name='ios-menu'/>
+                        <Icon style={{fontSize: 18, color: "white"}} name='barcode'/>
+                    </Button>
+
+                    <Button transparent>
+                        <Icon style={{fontSize: 18, color: "white"}} name='microphone'/>
+                    </Button>
+
+                    <Button transparent>
+                        <Icon style={{fontSize: 18, color: "white"}} name="bars"/>
                     </Button>
                 </Header>
                 <Content>

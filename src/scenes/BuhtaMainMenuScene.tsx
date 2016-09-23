@@ -31,7 +31,7 @@ export class BuhtaMainMenuScene extends Component<IBuhtaMainMenuSceneProps, IBuh
         let Text = Text_ as any;
         console.log("render BuhtaScene");
         return (
-            <BuhtaCoreScene navigator={this.props.navigator} title="Главное меню" backIcon="ios-power">
+            <BuhtaCoreScene navigator={this.props.navigator} title="Главное меню" backIcon="power-off">
                 <List initialListSize={2}>
                     <ListItem iconLeft>
                         <Icon name='ios-chatboxes'/>

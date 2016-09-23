@@ -40,6 +40,7 @@ export class BuhtaBarcodeScannerScene extends Component<IBuhtaBarcodeScannerScen
 
     handleBarcodeReceived = (e: any) => {
         this.props.onBarcodeScanned(e.data, e.type);
+        this.props.navigator.pop();
     }
 
     render() {

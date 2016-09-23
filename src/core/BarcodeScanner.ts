@@ -2,6 +2,7 @@ import {Navigator, Route} from "react-native";
 import {IBuhtaBarcodeScannerSceneProps, BuhtaBarcodeScannerScene} from "../scenes/BuhtaBarcodeScannerScene";
 import {getDb} from "./getDb";
 import {DataTable} from "./SqlDb";
+import {stringAsSql} from "./SqlCore";
 
 export let barcodeScanner = new BarcodeScanner();
 
@@ -12,12 +13,14 @@ export class BarcodeScanner {
     scannedSubcontoType: string;
     scannedSubcontoId: number;
 
-
     findSubcontoByBarcode(): Promise<void> {
-        let sql ="SELECT "
+        let sql = `SELECT dbo.ПолучитьСубконтоПоШтрихКоду (${stringAsSql(this.scannedBarcode)})`;
         return getDb().executeSQL(sql)
-            .then((tables:DataTable[])=> {
-
+            .then((tables: DataTable[])=> {
+                let row = tables[0].rows[0];
+                this.scannedSubcontoType = row["СубконтоТип"];
+                this.scannedSubcontoId = row["Субконто"];
+                return;
             });
     }
 
@@ -47,7 +50,7 @@ export class BarcodeScanner {
                         this.scannedBarcodeType = type;
                         this.findSubcontoByBarcode()
                             .then(()=> {
-                                resolve
+                                resolve();
                             });
                     }
                 }

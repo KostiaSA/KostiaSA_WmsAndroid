@@ -33,7 +33,7 @@ export default class BuhtaWmsAppNavigator extends Component<any, any> {
 
         return (
             <Navigator
-                sceneStyle={{padding: 10}}
+                sceneStyle={{padding:0, backgroundColor:"white"}}
                 initialRoute={ {component: BuhtaLoginScene } }
                 renderScene={(route:any, navigator:Navigator) => {
                     return <route.component {...route.passProps} navigator={navigator} />;

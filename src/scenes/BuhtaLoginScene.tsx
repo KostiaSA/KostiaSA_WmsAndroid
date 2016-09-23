@@ -45,7 +45,7 @@ export class BuhtaLoginScene extends Component<IBuhtaCoreSceneProps, IBuhtaLogin
     render() {
         console.log("render BuhtaScene");
         return (
-            <BuhtaCoreScene navigator={this.props.navigator} title="Авторизация" backIcon="ios-person">
+            <BuhtaCoreScene navigator={this.props.navigator} title="БУХта WMS" backIcon="sign-in">
                 <Text style={{ fontSize: 20 }}>
                     Войдите в систему!
                 </Text>
