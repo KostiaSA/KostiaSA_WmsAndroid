@@ -1,21 +1,6 @@
 import React, {Component} from "react";
-import {
-    View,
-    Text,
-    Navigator,
-    Route,
-    fetch as IFetch,
-    NativeModules,
-    AppRegistry,
-    Vibration,
-    BackAndroid
-} from "react-native";
-import {BuhtaMenu} from "./BuhtaMenu";
-import {getDb} from "../core/getDb";
-import {DataTable} from "../core/SqlDb";
-import {Button, Icon} from "native-base";
+import {Navigator} from "react-native";
 
-import BarcodeScannerView from "react-native-barcodescanner";
 import {BuhtaLoginScene} from "../scenes/BuhtaLoginScene";
 
 //import BuhtaMenu from "./BuhtaMenu"; xxx

@@ -1,12 +1,13 @@
 import React, {Component} from "react";
 import {View, Route, ListView, TouchableHighlight, TouchableNativeFeedback} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
-import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./BuhtaCoreScene";
+import {BuhtaCoreScene, IBuhtaCoreSceneProps, BuhtaCoreSceneState} from "./BuhtaCoreScene";
 import {getDb} from "../core/getDb";
 import {DataTable, DataRow} from "../core/SqlDb";
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {pushSpeak} from "../core/speak";
+import {barcodeScanner} from "../core/BarcodeScanner";
 
 
 let Text = Text_ as any;
@@ -36,15 +37,15 @@ export interface IPlaceState {
 }
 
 
-export class BuhtaTaskSceneState implements IBuhtaCoreSceneState {
-    isMounted: boolean;
-    scene: BuhtaTaskScene;
-    props: IBuhtaTaskSceneProps;
+export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProps> {
+    // scene: BuhtaTaskScene;
+    // props: IBuhtaTaskSceneProps;
 
     sourcePlaces: IPlaceState[];
     targetPlaces: IPlaceState[];
 
     steps: TaskStep[] = [];
+
 
     isSourcePlacesStateOk(): boolean {
         if (this.props.sourcePlacesConfig.allowedCount === "none")
@@ -190,22 +191,19 @@ export class TaskStep_Приемка extends TaskStep {
 
 }
 
-export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSceneState> {
+export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTaskSceneState> {
+
 
     constructor(props: IBuhtaTaskSceneProps, context: any) {
         super(props, context);
         this.props = props;
         this.context = context;
-        this.state = new BuhtaTaskSceneState();
-        this.state.props = this.props;
-        this.state.scene = this;
+        this.state = new BuhtaTaskSceneState(props, this);
     }
 
-    componentDidMount = () => {
-        this.state.isMounted = true;
-        setTimeout(()=> {
-            this.state.loadIncompletedStepsFromSql();
-        }, 200);
+    componentDidMount () {
+        super.componentDidMount();
+        this.state.loadIncompletedStepsFromSql();
     };
 
 
@@ -281,9 +279,13 @@ export class BuhtaTaskScene extends Component<IBuhtaTaskSceneProps, BuhtaTaskSce
     }
 
     render() {
-        console.log("render BuhtaScene");
+        console.log("render TaskScene");
         return (
-            <BuhtaCoreScene navigator={this.props.navigator} title={"Задание "+this.props.taskId}>
+            <BuhtaCoreScene
+                navigator={this.props.navigator}
+                title={"Задание "+this.props.taskId}
+                onGetBarcode={()=>{ alert(barcodeScanner.scannedBarcode); }}
+            >
                 {this.renderTaskHeader()}
                 {this.renderTargets()}
                 {this.renderIncompleteSteps()}

@@ -1,10 +1,4 @@
 import * as moment from "moment";
-import * as uuid from "UUID";
-
-export function getNewGuid(): string {
-    return (uuid as any).v1().toString();
-}
-
 
 function mssql_escape_string(str: string) {
     return str.replace(/./g, function (char: string): string {

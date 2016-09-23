@@ -1,18 +1,18 @@
 import React, {Component} from "react";
 import {View, Route, ListView} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
-import {BuhtaCoreScene, IBuhtaCoreSceneProps, IBuhtaCoreSceneState} from "./BuhtaCoreScene";
+import {BuhtaCoreScene, IBuhtaCoreSceneProps, BuhtaCoreSceneState} from "./BuhtaCoreScene";
 
 
 export interface IBuhtaMainMenuSceneProps extends IBuhtaCoreSceneProps {
 
 }
 
-export interface IBuhtaMainMenuSceneState extends IBuhtaCoreSceneState {
+export class IBuhtaMainMenuSceneState extends BuhtaCoreSceneState<IBuhtaMainMenuSceneProps> {
 
 }
 
-export class BuhtaMainMenuScene extends Component<IBuhtaMainMenuSceneProps, IBuhtaMainMenuSceneState> {
+export class BuhtaMainMenuScene extends BuhtaCoreScene<IBuhtaMainMenuSceneProps, IBuhtaMainMenuSceneState> {
 
     renderTest = (): JSX.Element[]=> {
         let Text = Text_ as any;
