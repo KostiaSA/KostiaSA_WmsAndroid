@@ -4,11 +4,12 @@ import * as _ from "lodash";
 import * as moment from "moment";
 //
 import {throwError} from "./Error";
+import crypto from "crypto-js";
 
 // import {SelectStmt} from "./SelectStmt";
 // import {SqlDialect, SqlStmt} from "./SqlCore";
 import {getConnectionId} from "./getConnectionId";
-import {getBuhtaServerAddress} from "./config";
+import {getBuhtaServerAddress, getBuhtaServerKey} from "./config";
 import {showDevError} from "./showDevError";
 //import {checkAuth} from "./Auth";
 //import {socket} from "./Socket";
@@ -262,6 +263,13 @@ export class SqlDb {
 
     }
 
+    encryptSql(sql: string[]): string[] {
+        return sql.map((item)=> {
+            return crypto.AES.encrypt(item, getBuhtaServerKey()+"AgFLsh23iGd").toString()
+        });
+
+    }
+
     executeSQL(sql: SqlBatch): Promise<DataTable[]|string> {
 
         //   return checkAuth()
@@ -273,7 +281,7 @@ export class SqlDb {
 
         let req: ExecuteSqlBatchSocketRequest = {
             dbName: this.dbName,
-            sql: this.sqlBatchToStringArray(sql)
+            sql: this.encryptSql(this.sqlBatchToStringArray(sql))
         };
 
         //console.log(this.dialect);

@@ -5,7 +5,8 @@ import {BuhtaCoreScene, IBuhtaCoreSceneProps, BuhtaCoreSceneState} from "./Buhta
 import {BuhtaMainMenuScene} from "./BuhtaMainMenuScene";
 import {BuhtaTaskScene, IBuhtaTaskSceneProps} from "./BuhtaTaskScene";
 import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
-
+import crypto from "crypto-js";
+//import Cipher = CryptoJS.Cipher;
 
 export interface IBuhtaLoginSceneProps extends IBuhtaCoreSceneProps {
 
@@ -59,6 +60,13 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
         this.props.navigator.push(mainMenuRoute);
     }
 
+    handleTestEncrypt = ()=> {
+        let str=crypto.AES.encrypt("жопа17Не выбрана палета, куда принимать товар","0987654321").toString();
+        console.log(str);
+        let str1=crypto.AES.decrypt(str, "0987654321=").toString(crypto.enc.Utf8);;
+        console.log(str1);
+    }
+
     render() {
         console.log("render BuhtaScene");
         return (
@@ -68,6 +76,7 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
                 </Text>
                 <Button success onPress={this.handleOkButtonPress}>Войти</Button>
                 <Button success onPress={this.handleTestTaskButtonPress}>Тест task</Button>
+                <Button success onPress={this.handleTestEncrypt}>Тест encrypt</Button>
 
             </BuhtaCoreScene>);
     }
