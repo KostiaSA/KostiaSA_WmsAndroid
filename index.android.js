@@ -3,4 +3,4 @@
 import { AppRegistry } from 'react-native'
 import App from './build'
 
-AppRegistry.registerComponent('ReactNativeTS', () => App)
+AppRegistry.registerComponent('BuhtaWMS', () => App)
