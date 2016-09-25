@@ -16,6 +16,7 @@ import com.oblador.vectoricons.VectorIconsPackage;
 import com.wenkesj.voice.VoicePackage;
 import com.eguma.barcodescanner.BarcodeScannerPackage;
 import com.mihir.react.tts.*;
+import com.zmxv.RNSound.RNSoundPackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,7 +33,8 @@ public class MainApplication extends Application implements ReactApplication {
           new VectorIconsPackage(),
           new VoicePackage(),
           new BarcodeScannerPackage(),
-          new RCTTextToSpeechModule()
+          new RCTTextToSpeechModule(),
+          new RNSoundPackage()
       );
     }
   };

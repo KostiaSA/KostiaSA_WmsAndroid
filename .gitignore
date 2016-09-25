@@ -47,3 +47,5 @@ android/app/libs
 android/keystores/debug.keystore
 
 !/node_modules/react-native-voice/android/src/main/java/com/wenkesj/voice/VoiceModule.java
+!/android/app/build.gradle
+!/android/settings.gradle

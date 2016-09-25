@@ -6,6 +6,7 @@ import {BuhtaMainMenuScene} from "./BuhtaMainMenuScene";
 import {BuhtaTaskScene, IBuhtaTaskSceneProps} from "./BuhtaTaskScene";
 import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
 import crypto from "crypto-js";
+import {pushSpeak} from "../core/speak";
 //import Cipher = CryptoJS.Cipher;
 
 export interface IBuhtaLoginSceneProps extends IBuhtaCoreSceneProps {
@@ -61,10 +62,38 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
     }
 
     handleTestEncrypt = ()=> {
-        let str=crypto.AES.encrypt("жопа17Не выбрана палета, куда принимать товар","0987654321").toString();
+        let str = crypto.AES.encrypt("жопа17Не выбрана палета, куда принимать товар", "0987654321").toString();
         console.log(str);
-        let str1=crypto.AES.decrypt(str, "0987654321=").toString(crypto.enc.Utf8);;
+        let str1 = crypto.AES.decrypt(str, "0987654321=").toString(crypto.enc.Utf8);
+        ;
         console.log(str1);
+    }
+
+    handleTestSound = ()=> {
+        var Sound = require('react-native-sound') as any;
+
+        var whoosh = new Sound('error.mp3', Sound.MAIN_BUNDLE, (error: any) => {
+            if (error) {
+                console.log('failed to load the sound', error);
+            } else { // loaded successfully
+                whoosh.play();
+                setTimeout(()=> {
+                    pushSpeak("ошибка. штрих код не найден.");
+                }, 800);
+                //console.log('duration in seconds: ' + whoosh.getDuration() +
+                //  'number of channels: ' + whoosh.getNumberOfChannels());
+            }
+        });
+
+        // whoosh.setVolume(1);
+        //
+        // whoosh.play((success: boolean) => {
+        //     if (success) {
+        //         console.log('successfully finished playing');
+        //     } else {
+        //         console.log('playback failed due to audio decoding errors');
+        //     }
+        // });
     }
 
     render() {
@@ -77,6 +106,7 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
                 <Button success onPress={this.handleOkButtonPress}>Войти</Button>
                 <Button success onPress={this.handleTestTaskButtonPress}>Тест task</Button>
                 <Button success onPress={this.handleTestEncrypt}>Тест encrypt</Button>
+                <Button success onPress={this.handleTestSound}>Тест sound</Button>
 
             </BuhtaCoreScene>);
     }

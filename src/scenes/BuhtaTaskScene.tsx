@@ -7,6 +7,7 @@ import {DataTable, DataRow} from "../core/SqlDb";
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {pushSpeak} from "../core/speak";
+import {ISubconto} from "../Interfaces/ISubconto";
 
 
 let Text = Text_ as any;
@@ -67,6 +68,10 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     }
 
     handleBarcodeScan(barcode: string) {
+
+    }
+
+    handleSubcontoScan(subconto: ISubconto) {
 
     }
 
