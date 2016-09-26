@@ -82,7 +82,8 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
 
         this.openCameraScanner(this.props.navigator)
             .then((result: {barcode: string,type: string})=> {
-                this.props.onGetBarcode(result.barcode, result.type);
+                if (this.props.onGetBarcode !== undefined)
+                    this.props.onGetBarcode(result.barcode, result.type);
             });
     }
 
@@ -90,7 +91,8 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
 
         this.openVoiceScanner(this.props.navigator)
             .then((text: string) => {
-                this.props.onGetVoiceText(text);
+                if (this.props.onGetVoiceText !== undefined)
+                    this.props.onGetVoiceText(text);
             });
     }
 

@@ -10,7 +10,8 @@
         "experimentalDecorators": true,
         "preserveConstEnums": true,
         "allowJs": true,
-        "sourceMap": true
+        "sourceMap": true,
+        "strictNullChecks":true
     },
     "filesGlob": [
         "typings/index.d.ts",
