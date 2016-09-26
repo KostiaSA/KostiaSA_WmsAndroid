@@ -8,7 +8,11 @@ import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
 import crypto from "crypto-js";
 import {pushSpeak} from "../core/speak";
 import {runMessage} from "../core/runMessage";
-import {СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН, СООБЩЕНИЕ_НЕВЕРНЫЙ_ПАРОЛЬ} from "../constants/messages";
+import {
+    СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН, СООБЩЕНИЕ_НЕВЕРНЫЙ_ПАРОЛЬ,
+    СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР
+} from "../constants/messages";
+import {taskSpecAlgo_Приемка} from "../taskSpecAlgorithms/taskSpecAlgo_Приемка";
 //import Cipher = CryptoJS.Cipher;
 
 export interface IBuhtaLoginSceneProps extends IBuhtaCoreSceneProps {
@@ -48,9 +52,11 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
                 allowedSubcontos: ["PAL", "CEL"],
                 allowedCount: "single",
                 title: "Куда принимаем товар",
-                placesNotReadyErrorMessage: "Не выбрана палета, куда принимать товар",
+                placesNotReadyErrorMessage: СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР,
             },
-            stepsTitle: "Список товара"
+            objectAllowedSubcontos: ["ТМЦ"],
+            stepsTitle: "Список товара",
+            generateTaskSpecAlgorithm: taskSpecAlgo_Приемка
         }
 
 

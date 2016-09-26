@@ -9,14 +9,14 @@ export function getSubcontoFromFullBarcode(barcode: string, allowedSubcontoTypes
     if (allowedSubcontoTypes !== undefined && allowedSubcontoTypes.length > 0)
         allowedSubcontoTypesSql = " AND СубконтоТип IN (" + allowedSubcontoTypes.map((item)=>stringAsSql(item)).join(",") + ")";
 
-    let sql = `SELECT СубконтоТип,Субконто FROM ШтрихКод WHERE Номер=${stringAsSql(barcode)} ${allowedSubcontoTypesSql}`;
+    let sql = `SELECT ОбъектТип,Объект FROM ШтрихКод WHERE Номер=${stringAsSql(barcode)} ${allowedSubcontoTypesSql}`;
 
     return getDb().executeSQL(sql)
         .then((tables: DataTable[])=> {
             return tables[0].rows.map((row: DataRow)=> {
                 let retSubconto: ISubconto = {
-                    type: row["СубконтоТип"],
-                    id: row["Субконто"]
+                    type: row["ОбъектТип"],
+                    id: row["Объект"]
                 }
                 return retSubconto;
             });

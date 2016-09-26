@@ -8,6 +8,16 @@ import {DataTable, DataRow} from "../core/SqlDb";
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {pushSpeak} from "../core/speak";
 import {ISubconto} from "../Interfaces/ISubconto";
+import {IMessage} from "../Interfaces/IMessage";
+import {runMessage} from "../core/runMessage";
+import {
+    СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР,
+    СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР, СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН,
+    СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ
+} from "../constants/messages";
+import {getSubcontoFromFullBarcode} from "../wms/getSubcontoFromFullBarcode";
+import {IGenerateTaskSpecAlgorithm} from "../Interfaces/IGenerateTaskSpecAlgorithm";
+import {IGenerateTaskSpecContext} from "../Interfaces/IGenerateTaskSpecContext";
 
 
 let Text = Text_ as any;
@@ -18,21 +28,26 @@ export interface IPlacesConfig {
     allowedSubcontos: string[];
     allowedCount: "none" | "single" | "multi";
     title: string;
-    placesNotReadyErrorMessage: string;
+    placesNotReadyErrorMessage: IMessage;
 }
 
 export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
     taskId: number;
     userId: number;
     action: TaskAction;
+    //needFullObjectBarcode:boolean;  // для приемки
     sourcePlacesConfig: IPlacesConfig;
     targetPlacesConfig: IPlacesConfig;
+    objectAllowedSubcontos: string[];
+
     stepsTitle: string;
+
+    generateTaskSpecAlgorithm: IGenerateTaskSpecAlgorithm;
 }
 
 export interface IPlaceState {
     type: string;
-    Id: number;
+    id: number;
     isActive: boolean;
 }
 
@@ -40,7 +55,7 @@ export interface IPlaceState {
 export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProps> {
     // scene: BuhtaTaskScene;
     // props: IBuhtaTaskSceneProps;
-
+    dogId:number;
     sourcePlaces: IPlaceState[];
     targetPlaces: IPlaceState[];
 
@@ -67,12 +82,80 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
         return false;
     }
 
-    handleBarcodeScan(barcode: string) {
+    handleBarcodeScan(barcode: string): Promise<void> {
+        return getSubcontoFromFullBarcode(barcode, this.props.objectAllowedSubcontos)
+            .then((subconto: ISubconto[])=> {
+                return this.handleSubcontoScan(subconto);
+            }).catch(()=> {
+                runMessage(СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН);
+            });
+    }
+
+    handleSubcontoScan(subconto: ISubconto[]): Promise<void> {
+        return new Promise<void>(
+            (resolve: () => void, reject: (error: string) => void) => {
+
+                if (!this.isSourcePlacesStateOk()) {
+                    runMessage(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР);
+                    reject(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР.toast!);
+                }
+                if (!this.isTargetPlacesStateOk()) {
+                    runMessage(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР);
+                    reject(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР.toast!);
+                }
+
+                // если source отсутствует (приемка), то требуется полное совпадение штрих-кода
+                if (this.props.sourcePlacesConfig.allowedCount === "none") {
+                    if (subconto.length > 1) {
+                        runMessage(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ);
+                        reject(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ.toast!);
+                    }
+                }
+
+
+                getDb
+
+                let context: IGenerateTaskSpecContext = {
+                    taskId: this.props.taskId,
+                    userId: this.props.userId,
+                    sourceType: this.getActiveSourcePlace().type,
+                    sourceId: this.getActiveSourcePlace().id,
+                    targetType: this.getActiveTargetPlace().type,
+                    targetId: this.getActiveTargetPlace().id,
+                    objectType: subconto[0].type,
+                    objectId: subconto[0].id,
+                    prihodDogId:-1;
+                }
+
+
+                resolve();
+            });
+
 
     }
 
-    handleSubcontoScan(subconto: ISubconto) {
+    getEmptyPlaceState(): IPlaceState {
+        let ret: IPlaceState = {
+            type: "Нет",
+            id: 0,
+            isActive: true
+        };
+    }
 
+    getActiveSourcePlace(): IPlaceState {
+        let ret: IPlaceState = this.sourcePlaces.filter((item: IPlaceState)=>item.isActive)[0];
+        if (ret === undefined)
+            return this.getEmptyPlaceState();
+        else
+            return ret;
+    }
+
+    getActiveTargetPlace(): IPlaceState {
+        let ret: IPlaceState = this.targetPlaces.filter((item: IPlaceState)=>item.isActive)[0];
+        if (ret === undefined)
+            return this.getEmptyPlaceState();
+        else
+            return ret;
     }
 
     handleTargetPlaceClick(placeIndex: number) {
@@ -82,9 +165,17 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
 
     isStepsLoaded: boolean;
 
+
+
     loadIncompletedStepsFromSql() {
 
         let sql = `
+SELECT 
+   Номер,
+   ДокументДоговор     
+FROM Задание 
+WHERE   ?    
+        
 SELECT 
    Счет,
    МестоТип,
@@ -288,7 +379,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
             <BuhtaCoreScene
                 navigator={this.props.navigator}
                 title={"Задание "+this.props.taskId}
-                onGetBarcode={(barcode: string, type: string)=>{ this.state.scannedBarcode=barcode; }}
+                onGetBarcode={(barcode: string, type: string)=>{ this.state.handleBarcodeScan(barcode);}}
                 onGetVoiceText={( text: string)=>{ this.state.scannedVoiceText=text; }}
             >
                 {this.renderTaskHeader()}
