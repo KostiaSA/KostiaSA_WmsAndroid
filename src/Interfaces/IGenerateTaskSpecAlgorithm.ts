@@ -1,5 +1,5 @@
-import {IGenerateTaskSpecContext} from "./IGenerateTaskSpecContext";
+import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "./IGenerateTaskSpecContext";
 
 export interface IGenerateTaskSpecAlgorithm {
-    (context: IGenerateTaskSpecContext) : void;
+    (context: IGenerateTaskSpecContext) : Promise<GenerateTaskSpecCheckResult>;
 }

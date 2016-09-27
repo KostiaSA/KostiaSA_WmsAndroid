@@ -7,7 +7,7 @@ export function getSubcontoFromFullBarcode(barcode: string, allowedSubcontoTypes
 
     let allowedSubcontoTypesSql = "";
     if (allowedSubcontoTypes !== undefined && allowedSubcontoTypes.length > 0)
-        allowedSubcontoTypesSql = " AND СубконтоТип IN (" + allowedSubcontoTypes.map((item)=>stringAsSql(item)).join(",") + ")";
+        allowedSubcontoTypesSql = " AND ОбъектТип IN (" + allowedSubcontoTypes.map((item)=>stringAsSql(item)).join(",") + ")";
 
     let sql = `SELECT ОбъектТип,Объект FROM ШтрихКод WHERE Номер=${stringAsSql(barcode)} ${allowedSubcontoTypesSql}`;
 
@@ -18,6 +18,7 @@ export function getSubcontoFromFullBarcode(barcode: string, allowedSubcontoTypes
                     type: row["ОбъектТип"],
                     id: row["Объект"]
                 }
+               //console.log(retSubconto);
                 return retSubconto;
             });
         });

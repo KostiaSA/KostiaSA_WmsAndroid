@@ -13,11 +13,12 @@ import {runMessage} from "../core/runMessage";
 import {
     СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР,
     СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР, СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН,
-    СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ
+    СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ, СООБЩЕНИЕ_ОШИБКА
 } from "../constants/messages";
 import {getSubcontoFromFullBarcode} from "../wms/getSubcontoFromFullBarcode";
 import {IGenerateTaskSpecAlgorithm} from "../Interfaces/IGenerateTaskSpecAlgorithm";
-import {IGenerateTaskSpecContext} from "../Interfaces/IGenerateTaskSpecContext";
+import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "../Interfaces/IGenerateTaskSpecContext";
+import {throwError} from "../core/Error";
 
 
 let Text = Text_ as any;
@@ -55,9 +56,9 @@ export interface IPlaceState {
 export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProps> {
     // scene: BuhtaTaskScene;
     // props: IBuhtaTaskSceneProps;
-    dogId:number;
-    sourcePlaces: IPlaceState[];
-    targetPlaces: IPlaceState[];
+    dogId: number;
+    sourcePlaces: IPlaceState[] = [];
+    targetPlaces: IPlaceState[] = [];
 
     steps: TaskStep[] = [];
 
@@ -65,9 +66,9 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     isSourcePlacesStateOk(): boolean {
         if (this.props.sourcePlacesConfig.allowedCount === "none")
             return true;
-        if (this.props.sourcePlacesConfig.allowedCount !== "single" && this.sourcePlaces.length === 1)
+        if (this.props.sourcePlacesConfig.allowedCount === "single" && this.sourcePlaces.length === 1)
             return true;
-        if (this.props.sourcePlacesConfig.allowedCount !== "multi" && this.sourcePlaces.length >= 1)
+        if (this.props.sourcePlacesConfig.allowedCount === "multi" && this.sourcePlaces.length >= 1)
             return true;
         return false;
     }
@@ -75,9 +76,9 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     isTargetPlacesStateOk(): boolean {
         if (this.props.targetPlacesConfig.allowedCount === "none")
             return true;
-        if (this.props.targetPlacesConfig.allowedCount !== "single" && this.targetPlaces.length === 1)
+        if (this.props.targetPlacesConfig.allowedCount === "single" && this.targetPlaces.length === 1)
             return true;
-        if (this.props.targetPlacesConfig.allowedCount !== "multi" && this.targetPlaces.length >= 1)
+        if (this.props.targetPlacesConfig.allowedCount === "multi" && this.targetPlaces.length >= 1)
             return true;
         return false;
     }
@@ -85,9 +86,15 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     handleBarcodeScan(barcode: string): Promise<void> {
         return getSubcontoFromFullBarcode(barcode, this.props.objectAllowedSubcontos)
             .then((subconto: ISubconto[])=> {
-                return this.handleSubcontoScan(subconto);
-            }).catch(()=> {
-                runMessage(СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН);
+                if (subconto.length === 0) {
+                    runMessage(СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН);
+                    return
+                }
+                else
+                    return this.handleSubcontoScan(subconto);
+            }).catch((error: any)=> {
+                alert(error);
+                runMessage(СООБЩЕНИЕ_ОШИБКА);
             });
     }
 
@@ -113,9 +120,8 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
                 }
 
 
-                getDb
-
                 let context: IGenerateTaskSpecContext = {
+                    runMode: "проверка",
                     taskId: this.props.taskId,
                     userId: this.props.userId,
                     sourceType: this.getActiveSourcePlace().type,
@@ -124,11 +130,36 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
                     targetId: this.getActiveTargetPlace().id,
                     objectType: subconto[0].type,
                     objectId: subconto[0].id,
-                    prihodDogId:-1;
+                    prihodDogId: this.dogId
                 }
 
+                // проверяем на корректность
+                this.props.generateTaskSpecAlgorithm(context)
+                    .then((checkResult: GenerateTaskSpecCheckResult)=> {
+                        if (checkResult === "ok") {
+                            context.runMode = "проведение";
+                            this.props.generateTaskSpecAlgorithm(context).then((checkResult: GenerateTaskSpecCheckResult) => {
+                                if (checkResult === "ok")
+                                    resolve();
+                                else
+                                    throw checkResult;
 
-                resolve();
+                            });
+                        }
+                        else {
+                            runMessage({
+                                sound: "error.mp3",
+                                voice: checkResult,
+                                toast: checkResult,
+                            });
+                            resolve();
+                        }
+                    })
+                    .catch((error: any)=> {
+                        reject(error);
+                    });
+
+
             });
 
 
@@ -140,6 +171,7 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
             id: 0,
             isActive: true
         };
+        return ret;
     }
 
     getActiveSourcePlace(): IPlaceState {
@@ -166,7 +198,6 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     isStepsLoaded: boolean;
 
 
-
     loadIncompletedStepsFromSql() {
 
         let sql = `
@@ -174,7 +205,7 @@ SELECT
    Номер,
    ДокументДоговор     
 FROM Задание 
-WHERE   ?    
+WHERE Ключ=${this.props.taskId}    
         
 SELECT 
    Счет,
@@ -200,8 +231,15 @@ WHERE
 
         getDb().executeSQL(sql)
             .then((tables: DataTable[])=> {
+
+                if (tables[0].rows.length === 0) //  не найдено
+                    throwError("не найдено задание с ключом " + this.props.taskId);
+
+                let taskRow = tables[0].rows[0];
+                this.dogId = taskRow["ДокументДоговор"];
+
                 this.steps.length = 0;
-                tables[0].rows.forEach((row: DataRow)=> {
+                tables[1].rows.forEach((row: DataRow)=> {
                     let step = new TaskStep_Приемка();
                     step.objectName = row["ОбъектНазвание"];
                     step.kol = row["Количество"];
@@ -294,6 +332,13 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         this.props = props;
         this.context = context;
         this.state = new BuhtaTaskSceneState(props, this);
+
+        this.state.targetPlaces[0] = {
+            type: "PAL",
+            id: 101,
+            isActive: true
+        };
+        ;
     }
 
     componentDidMount() {

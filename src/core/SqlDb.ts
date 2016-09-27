@@ -410,6 +410,7 @@ export class SqlDb {
             })
             .catch((err)=> {
                 showDevError(err);
+                throw err;
             })
 
         // socket.emit("executeSqlBatch", req);
