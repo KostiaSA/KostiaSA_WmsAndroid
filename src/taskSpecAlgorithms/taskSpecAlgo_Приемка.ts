@@ -1,4 +1,4 @@
-import {IGenerateTaskSpecContext} from "../Interfaces/IGenerateTaskSpecContext";
+import {IGenerateTaskSpecContext} from "../interfaces/IGenerateTaskSpecContext";
 import {emitFieldList, emitFieldList_forWhereSql} from "../core/emitSql";
 import {getDb} from "../core/getDb";
 import {stringAsSql} from "../core/SqlCore";

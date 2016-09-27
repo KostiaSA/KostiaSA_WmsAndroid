@@ -1,5 +1,5 @@
-import {IMessage} from "../Interfaces/IMessage";
-import {IMessageParams} from "../Interfaces/IMessageParams";
+import {IMessage} from "../interfaces/IMessage";
+import {IMessageParams} from "../interfaces/IMessageParams";
 import {pushSpeak} from "./speak";
 var Sound = require('react-native-sound') as any;
 import {ToastAndroid} from "react-native";

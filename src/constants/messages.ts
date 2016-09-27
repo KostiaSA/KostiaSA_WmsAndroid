@@ -1,4 +1,4 @@
-import {IMessage} from "../Interfaces/IMessage";
+import {IMessage} from "../interfaces/IMessage";
 
 export let СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН: IMessage = {
     sound: "error.mp3",

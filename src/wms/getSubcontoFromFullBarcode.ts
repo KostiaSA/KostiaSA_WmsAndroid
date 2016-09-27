@@ -1,4 +1,4 @@
-import {ISubconto} from "../Interfaces/ISubconto";
+import {ISubconto} from "../interfaces/ISubconto";
 import {stringAsSql} from "../core/SqlCore";
 import {getDb} from "../core/getDb";
 import {DataTable, DataRow} from "../core/SqlDb";

@@ -7,18 +7,21 @@ import {DataTable, DataRow} from "../core/SqlDb";
 
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {pushSpeak} from "../core/speak";
-import {ISubconto} from "../Interfaces/ISubconto";
-import {IMessage} from "../Interfaces/IMessage";
+import {ISubconto} from "../interfaces/ISubconto";
+import {IMessage} from "../interfaces/IMessage";
 import {runMessage} from "../core/runMessage";
 import {
     СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР,
-    СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР, СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН,
-    СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ, СООБЩЕНИЕ_ОШИБКА
+    СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР,
+    СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН,
+    СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ,
+    СООБЩЕНИЕ_ОШИБКА
 } from "../constants/messages";
 import {getSubcontoFromFullBarcode} from "../wms/getSubcontoFromFullBarcode";
-import {IGenerateTaskSpecAlgorithm} from "../Interfaces/IGenerateTaskSpecAlgorithm";
-import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "../Interfaces/IGenerateTaskSpecContext";
+import {IGenerateTaskSpecAlgorithm} from "../interfaces/IGenerateTaskSpecAlgorithm";
+import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "../interfaces/IGenerateTaskSpecContext";
 import {throwError} from "../core/Error";
+import {ICommand, getBestMatchCommand} from "../commander/commander";
 
 
 let Text = Text_ as any;
@@ -30,6 +33,7 @@ export interface IPlacesConfig {
     allowedCount: "none" | "single" | "multi";
     title: string;
     placesNotReadyErrorMessage: IMessage;
+    placesNotReadyText: string;
 }
 
 export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
@@ -37,8 +41,8 @@ export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
     userId: number;
     action: TaskAction;
     //needFullObjectBarcode:boolean;  // для приемки
-    sourcePlacesConfig: IPlacesConfig;
-    targetPlacesConfig: IPlacesConfig;
+    sourcePlacesConfig?: IPlacesConfig;
+    targetPlacesConfig?: IPlacesConfig;
     objectAllowedSubcontos: string[];
 
     stepsTitle: string;
@@ -49,6 +53,7 @@ export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
 export interface IPlaceState {
     type: string;
     id: number;
+    name: string;
     isActive: boolean;
 }
 
@@ -64,6 +69,8 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
 
 
     isSourcePlacesStateOk(): boolean {
+        if (this.props.sourcePlacesConfig === undefined)
+            return true;
         if (this.props.sourcePlacesConfig.allowedCount === "none")
             return true;
         if (this.props.sourcePlacesConfig.allowedCount === "single" && this.sourcePlaces.length === 1)
@@ -74,6 +81,8 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     }
 
     isTargetPlacesStateOk(): boolean {
+        if (this.props.targetPlacesConfig === undefined)
+            return true;
         if (this.props.targetPlacesConfig.allowedCount === "none")
             return true;
         if (this.props.targetPlacesConfig.allowedCount === "single" && this.targetPlaces.length === 1)
@@ -81,6 +90,54 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
         if (this.props.targetPlacesConfig.allowedCount === "multi" && this.targetPlaces.length >= 1)
             return true;
         return false;
+    }
+
+    handleVoiceText(voiceText: string) {
+
+        let commandList: ICommand[] = [];
+
+        commandList.push({
+            words: "информация o паллетe",
+            number: "REQ"
+        })
+
+        commandList.push({
+            words: "информация o коробке",
+            number: "REQ"
+        })
+
+        commandList.push({
+            words: "информация o товаре",
+            number: "REQ"
+        })
+
+        commandList.push({
+            words: "информация по штрих коду",
+            number: "REQ"
+        })
+
+        commandList.push({
+            words: "новая палета",
+            number: "NONREQ"
+        })
+
+
+        commandList.push({
+            words: "палета",
+            number: "REQ"
+        })
+
+        commandList.push({
+            words: "товар",
+            number: "REQ"
+        })
+
+        commandList.push({
+            words: "коробка",
+            number: "REQ"
+        })
+
+        getBestMatchCommand(commandList,voiceText);
     }
 
     handleBarcodeScan(barcode: string): Promise<void> {
@@ -112,7 +169,7 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
                 }
 
                 // если source отсутствует (приемка), то требуется полное совпадение штрих-кода
-                if (this.props.sourcePlacesConfig.allowedCount === "none") {
+                if (this.props.sourcePlacesConfig === undefined || this.props.sourcePlacesConfig.allowedCount === "none") {
                     if (subconto.length > 1) {
                         runMessage(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ);
                         reject(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ.toast!);
@@ -169,6 +226,7 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
         let ret: IPlaceState = {
             type: "Нет",
             id: 0,
+            name: "",
             isActive: true
         };
         return ret;
@@ -333,12 +391,13 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         this.context = context;
         this.state = new BuhtaTaskSceneState(props, this);
 
-        this.state.targetPlaces[0] = {
-            type: "PAL",
-            id: 101,
-            isActive: true
-        };
-        ;
+        // this.state.targetPlaces[0] = {
+        //     type: "PAL",
+        //     id: 101,
+        //     name: "Паллета 00101",
+        //     isActive: true
+        // };
+
     }
 
     componentDidMount() {
@@ -399,19 +458,53 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
     // }
 
 
-    renderTargets = (): JSX.Element => {
+    renderTargets = (): JSX.Element | null => {
         let ret: JSX.Element[] = [];
-        for (let i = 0; i <= 1; i++) {
-            ret.push(
-                <ListItem key={i} button onPress={()=>{this.state.handleTargetPlaceClick(i)}}>
-                    <Text>Паллета 010{i}</Text>
-                </ListItem>
-            );
+
+        if (this.state.targetPlaces.length === 0) {
+            if (this.props.targetPlacesConfig === undefined || this.props.targetPlacesConfig.allowedCount === "none") {
+                return null;
+            }
+            else {
+                ret.push(
+                    <ListItem iconRight button onPress={()=>{this.state.handleTargetPlaceClick(0)}}>
+                        <Text>{this.props.targetPlacesConfig.placesNotReadyText}</Text>
+                        <Icon name="bullseye" style={{fontSize: 20, color: "red"}}/>
+                    </ListItem>
+                );
+            }
         }
+        else {
+            this.state.targetPlaces.forEach((target: IPlaceState, index: number)=> {
+
+                let isActive: any = null;
+                if (target.isActive)
+                //isActive =<Text style={{ color:"limegreen"}}>активна</Text>;
+                    isActive =<Icon name="bullseye" style={{fontSize: 20, color: "green"}}/>
+
+                ret.push(
+                    <ListItem iconRight key={index} button onPress={()=>{this.state.handleTargetPlaceClick(index)}}>
+                        <Text>{target.name}</Text>
+                        {isActive}
+                    </ListItem>
+
+                );
+            }, this);
+        }
+        // this.state.targetPlaces.map()
+        //
+        // for (let i = 0; i <= 1; i++) {
+        //     ret.push(
+        //         <ListItem key={i} button onPress={()=>{this.state.handleTargetPlaceClick(i)}}>
+        //             <Text>Паллета 010{i}</Text>
+        //         </ListItem>
+        //     );
+        // }
+
         return (
             <List>
                 <ListItem itemDivider>
-                    <Text style={{ color:"dimgray"}}>{this.props.targetPlacesConfig.title.toUpperCase()}</Text>
+                    <Text style={{ color:"dimgray"}}>{this.props.targetPlacesConfig!.title.toUpperCase()}</Text>
                 </ListItem>
                 {ret}
             </List>
@@ -425,7 +518,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
                 navigator={this.props.navigator}
                 title={"Задание "+this.props.taskId}
                 onGetBarcode={(barcode: string, type: string)=>{ this.state.handleBarcodeScan(barcode);}}
-                onGetVoiceText={( text: string)=>{ this.state.scannedVoiceText=text; }}
+                onGetVoiceText={( text: string)=>{ this.state.handleVoiceText(text); }}
             >
                 {this.renderTaskHeader()}
                 {this.renderTargets()}
