@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Navigator} from "react-native";
+import {Navigator, BackAndroid} from "react-native";
 
 import {BuhtaLoginScene} from "../scenes/BuhtaLoginScene";
 
@@ -11,7 +11,14 @@ import {BuhtaLoginScene} from "../scenes/BuhtaLoginScene";
 //import SpeechAndroid from "react-native-android-voice";
 
 
+export let appNavigator: Navigator;
+
 export default class BuhtaWmsAppNavigator extends Component<any, any> {
+
+    handleHardwareBackPress = (): boolean=> {
+        appNavigator.pop();
+        return true;
+    };
 
     render() {
         console.log("render BuhtaWmsAppNavigator");
@@ -21,6 +28,10 @@ export default class BuhtaWmsAppNavigator extends Component<any, any> {
                 sceneStyle={{padding:0, backgroundColor:"white"}}
                 initialRoute={ {component: BuhtaLoginScene } }
                 renderScene={(route:any, navigator:Navigator) => {
+                    if (appNavigator===undefined){
+                      appNavigator=navigator;
+                      BackAndroid.addEventListener("hardwareBackPress",this.handleHardwareBackPress);
+                    }
                     return <route.component {...route.passProps} navigator={navigator} />;
                   }}
                 configureScene={(route, routeStack) =>
@@ -29,3 +40,4 @@ export default class BuhtaWmsAppNavigator extends Component<any, any> {
         );
     }
 }
+

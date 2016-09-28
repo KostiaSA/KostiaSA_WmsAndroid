@@ -1,73 +1,116 @@
-import {IGenerateTaskSpecContext} from "../interfaces/IGenerateTaskSpecContext";
 import {emitFieldList, emitFieldList_forWhereSql} from "../core/emitSql";
 import {getDb} from "../core/getDb";
 import {stringAsSql} from "../core/SqlCore";
-import {РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ, РЕГИСТР_ОСТАТОК} from "../constants/registers";
+import {РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ, РЕГИСТР_ОСТАТОК, РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ} from "../constants/registers";
 import {pushSpeak} from "../core/speak";
 import {DataTable} from "../core/SqlDb";
+import {BuhtaTaskSceneState} from "../scenes/BuhtaTaskScene";
+import {ITaskSpecConfig} from "../config/Tasks";
+import {ISubconto} from "../interfaces/ISubconto";
+import {IMessage} from "../interfaces/IMessage";
+import {getInstantPromise} from "../core/getInstantPromise";
 
-export function taskSpecAlgo_ВзятьПаллетуВЗадание(context: IGenerateTaskSpecContext): Promise<void> {
-    let ostFields=[
+export function taskSpecAlgo_ВзятьПаллетуВЗадание(mode: "run"|"check", taskState: BuhtaTaskSceneState, taskSpecConfig: ITaskSpecConfig, palleteBarcode: ISubconto): Promise<IMessage> {
+    // if (mode === "check")
+    //   return getInstantPromise<IMessage>({isError: false});
+
+    let ostFields = [
         ["Счет", stringAsSql(РЕГИСТР_ОСТАТОК)],
-        ["ОбъектТип", stringAsSql(context.objectType)],
-        ["Объект", context.objectId],
+        ["ОбъектТип", stringAsSql(palleteBarcode.type)],
+        ["Объект", palleteBarcode.id],
     ]
 
-    let fields = [
-        ["Дата", "@date"],
-        ["ДокспецВид", "15000001"],
-        ["Задание", context.taskId],
-        ["Сотрудник", context.userId],
-        ["Время", "dbo.ДатаБезВремени(@date)"],
+    let sql = `SELECT * FROM Остаток WHERE ${ emitFieldList_forWhereSql(ostFields)}`;
 
-        ["КрСчет", stringAsSql(РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ)],
-        ["КрОбъектТип", stringAsSql(context.objectType)],
-        ["КрОбъект", context.objectId],
-        ["КрДоговорПриходаТип", "'Дог'"],
-        ["КрДоговорПрихода", context.prihodDogId],
-        ["КрМестоТип", stringAsSql("Нет")],
-        ["КрМесто", 0],
-        ["КрЗаданиеТип", "'Док'"],
-        ["КрЗадание", context.taskId],
-        ["КрСотрудникТип", "'Нет'"],
-        ["КрСотрудник", 0],
-        ["КрКоличество", 1],
+    if (mode === "check") {
+        return getDb().executeSQL(sql)
+            .then((tables: DataTable[])=> {
+                if (tables[0].rows.length === 0)
+                    return {
+                        isError: true,
+                        sound: "error.mp3",
+                        voice: "Палета не найдена",
+                        toast: "Паллета не найдена"
+                    };
 
-        ["ДбСчет", stringAsSql(РЕГИСТР_ОСТАТОК)],
-        ["ДбОбъектТип", stringAsSql(context.objectType)],
-        ["ДбОбъект", context.objectId],
-        ["ДбМестоТип", stringAsSql(context.targetType)],
-        ["ДбМесто", context.targetId],
-        ["ДбДоговорПриходаТип", "'Дог'"],
-        ["ДбДоговорПрихода", context.prihodDogId],
-        ["ДбКоличество", 1],
-    ];
+                if (tables[0].rows.length > 1)
+                    return {
+                        isError: true,
+                        sound: "error.mp3",
+                        voice: "Найдено несколько палет",
+                        toast: "Найдено несколько паллет с таким штрих-кодом"
+                    };
 
-    if (context.runMode === "проверка") {
-        //let krFields = fields.filter((item: any)=>item[0].toString().startsWith("Кр") && item[0] !== "КрКоличество");
+                if (tables[0].rows[0]["Количество"] !== 1)
+                    return {
+                        isError: true,
+                        sound: "error.mp3",
+                        voice: "Системная ошибка",
+                        toast: "Системная ошибка, количество !== 1"
+                    };
 
-        let sql = `SELECT SUM(Количество) FROM Остаток WHERE ${ emitFieldList_forWhereSql(ostFields)}`;
+                if (tables[0].rows.length === 1)
+                    return {
+                        isError: false
+                    };
 
-        return getDb().selectToNumber(sql).then((kol: number)=> {
-            if (kol >= 1)
-                return "ok";
-            else
-                return  "нет такого товара в приемке";
-        });
-
+            });
     }
-    else if (context.runMode === "проведение") {
 
-        let sql = `
+    return getDb().executeSQL(sql)
+        .then((tables: DataTable[])=> {
+            if (tables[0].rows.length !== 1)
+                return {
+                    isError: true,
+                    sound: "error.mp3",
+                    voice: "Системная ошибка",
+                    toast: "Системная ошибка"
+                };
+
+            let row=tables[0].rows[0];
+
+            let fields = [
+                ["Дата", "@date"],
+                ["ДокспецВид", taskState.props.taskConfig.документВид * 1000 + taskSpecConfig.докспецВид],
+                ["Задание", taskState.props.taskId],
+                ["Сотрудник", taskState.props.userId],
+                ["Время", "dbo.ДатаБезВремени(@date)"],
+
+                ["КрСчет", row["Счет"]],
+                ["КрОбъектТип", row["КрОбъектТип"]],
+                ["КрОбъект", row["КрОбъект"]],
+                ["КрДоговорПриходаТип", row["КрДоговорПриходаТип"]],
+                ["КрДоговорПрихода", row["КрДоговорПрихода"]],
+                ["КрМестоТип", row["КрМестоТип"]],
+                ["КрМесто", row["КрМесто"]],
+                ["КрЗаданиеТип", row["КрЗаданиеТип"]],
+                ["КрЗадание", row["КрЗадание"]],
+                ["КрСотрудникТип", row["КрСотрудникТип"]],
+                ["КрСотрудник", row["КрСотрудник"]],
+                ["КрКоличество", row["КрКоличество"]],
+
+                ["ДбСчет", stringAsSql(РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ)],
+                ["ДбОбъектТип", stringAsSql(palleteBarcode.type)],
+                ["ДбОбъект", palleteBarcode.id],
+                ["ДбЗаданиеТип", stringAsSql("Док")],
+                ["ДбЗадание", taskState.props.taskId],
+                ["ДбКоличество",  row["КрКоличество"]],
+            ];
+
+            let sql = `
 DECLARE @date DATETIME=GETDATE()    
 INSERT ЗаданиеСпец(${ emitFieldList(fields, "target")}) 
 SELECT ${ emitFieldList(fields, "source")}`;
 
-        return getDb().executeSQL(sql).then(()=> {
-            pushSpeak("принят товар на палету 02 34");
-            return "ok";
+            return getDb().executeSQL(sql).then(()=> {
+                return {
+                    isError: true,
+                    sound: "",
+                    voice: "Палета взята в работу",
+                    toast: "Паллета взята в работу"
+                };
+            });
+
         });
-    }
-    else
-        throw  "taskSpecAlgo_Приемка(): internal error";
+
 }

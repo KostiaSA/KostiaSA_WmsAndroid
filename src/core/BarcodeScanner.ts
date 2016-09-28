@@ -4,16 +4,16 @@ import {getDb} from "./getDb";
 import {DataTable} from "./SqlDb";
 import {stringAsSql} from "./SqlCore";
 
-export function findSubcontoByBarcode(): Promise<void> {
-    let sql = `SELECT dbo.ПолучитьСубконтоПоШтрихКоду (${stringAsSql(this.scannedBarcode)})`;
-return getDb().executeSQL(sql)
-    .then((tables: DataTable[])=> {
-        let row = tables[0].rows[0];
-        this.scannedSubcontoType = row["СубконтоТип"];
-        this.scannedSubcontoId = row["Субконто"];
-        return;
-    });
-}
+// export function findSubcontoByBarcode(): Promise<void> {
+//     let sql = `SELECT dbo.ПолучитьСубконтоПоШтрихКоду (${stringAsSql(this.scannedBarcode)})`;
+// return getDb().executeSQL(sql)
+//     .then((tables: DataTable[])=> {
+//         let row = tables[0].rows[0];
+//         this.scannedSubcontoType = row["СубконтоТип"];
+//         this.scannedSubcontoId = row["Субконто"];
+//         return;
+//     });
+// }
 
 //
 // export class BarcodeScanner {

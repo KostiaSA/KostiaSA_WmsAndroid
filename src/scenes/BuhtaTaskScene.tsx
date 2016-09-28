@@ -1,3 +1,5 @@
+import * as _ from "lodash";
+
 import React, {Component} from "react";
 import {View, Route, ListView, TouchableHighlight, TouchableNativeFeedback} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
@@ -8,7 +10,7 @@ import {DataTable, DataRow} from "../core/SqlDb";
 import {Col, Row, Grid} from 'react-native-easy-grid';
 import {pushSpeak} from "../core/speak";
 import {ISubconto} from "../interfaces/ISubconto";
-import {IMessage} from "../interfaces/IMessage";
+
 import {runMessage} from "../core/runMessage";
 import {
     СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР,
@@ -18,47 +20,37 @@ import {
     СООБЩЕНИЕ_ОШИБКА
 } from "../constants/messages";
 import {getSubcontoFromFullBarcode} from "../wms/getSubcontoFromFullBarcode";
-import {IGenerateTaskSpecAlgorithm} from "../interfaces/IGenerateTaskSpecAlgorithm";
-import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "../interfaces/IGenerateTaskSpecContext";
+//import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "../interfaces/IGenerateTaskSpecContext";
 import {throwError} from "../core/Error";
 import {ICommand, getBestMatchCommand} from "../commander/commander";
-import {ITaskConfig} from "../config/Tasks";
+import {ITaskConfig, ITaskSpecConfig} from "../config/Tasks";
+import {BuhtaTaskContextMenuScene, IBuhtaTaskContextMenuSceneProps} from "./BuhtaTaskContextMenuScene";
+import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
+import {getInstantPromise} from "../core/getInstantPromise";
+import {IMessage} from "../interfaces/IMessage";
 
 
 let Text = Text_ as any;
-
-export type TaskAction ="подбор" | "размещение" | "приемка";
-
 
 export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
     taskConfig: ITaskConfig;
     taskId: number;
     userId: number;
-    action: TaskAction;
-    //needFullObjectBarcode:boolean;  // для приемки
-    //sourcePlacesConfig?: ITaskTargetSourcePlacesConfig;
-    //targetPlacesConfig?: ITaskTargetSourcePlacesConfig;
-    //objectSubconto: string[];
-
-    //stepsTitle: string;
-
-    //generateTaskSpecAlgorithm: IGenerateTaskSpecAlgorithm;
 }
 
-export interface IPlaceState {
+export interface ITaskSourceTargetPlaceState {
     type: string;
     id: number;
     name: string;
     isActive: boolean;
 }
 
-
 export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProps> {
     // scene: BuhtaTaskScene;
     // props: IBuhtaTaskSceneProps;
     dogId: number;
-    sourcePlaces: IPlaceState[] = [];
-    targetPlaces: IPlaceState[] = [];
+    sourcePlaces: ITaskSourceTargetPlaceState[] = [];
+    targetPlaces: ITaskSourceTargetPlaceState[] = [];
 
     steps: TaskStep[] = [];
 
@@ -85,6 +77,22 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
         if (this.props.taskConfig.targetPlacesConfig.allowedCount === "multi" && this.targetPlaces.length >= 1)
             return true;
         return false;
+    }
+
+    handleContextMenu() {
+        let sceneProps: IBuhtaTaskContextMenuSceneProps = {
+            navigator: this.props.navigator,
+            taskSceneState: this
+        }
+
+        let route: Route = {
+            component: BuhtaTaskContextMenuScene,
+            passProps: sceneProps,
+            sceneConfig: getNavigatorNoTransition(),
+
+        };//, sceneConfig:Navigator.SceneConfigs.FadeAndroid};
+        this.props.navigator.push(route);
+
     }
 
     handleVoiceText(voiceText: string) {
@@ -135,8 +143,23 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
         getBestMatchCommand(commandList, voiceText);
     }
 
+    getBarcoderAllowedSubcontoTypes(): string[] {
+        let ret: string[] = [];
+
+        if (this.props.taskConfig.sourcePlacesConfig !== undefined)
+            ret = ret.concat(this.props.taskConfig.sourcePlacesConfig.allowedSubcontos);
+
+        if (this.props.taskConfig.targetPlacesConfig !== undefined)
+            ret = ret.concat(this.props.taskConfig.targetPlacesConfig.allowedSubcontos);
+
+        ret = ret.concat(this.props.taskConfig.specConfig.map((item: ITaskSpecConfig)=>item.objectSubcontoType));
+        //alert(ret.join("+"));
+        return _.uniq(ret);
+    }
+
     handleBarcodeScan(barcode: string): Promise<void> {
-        return getSubcontoFromFullBarcode(barcode, this.props.taskConfig.objectAllowedSubcontos)
+
+        return getSubcontoFromFullBarcode(barcode, this.getBarcoderAllowedSubcontoTypes())
             .then((subconto: ISubconto[])=> {
                 if (subconto.length === 0) {
                     runMessage(СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН);
@@ -150,75 +173,112 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
             });
     }
 
-    handleSubcontoScan(subconto: ISubconto[]): Promise<void> {
-        return new Promise<void>(
-            (resolve: () => void, reject: (error: string) => void) => {
+    handleSubcontoScan(subcontos: ISubconto[]): Promise<void> {
 
-                if (!this.isSourcePlacesStateOk()) {
-                    runMessage(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР);
-                    reject(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР.toast!);
+        for (let i = 0; i < subcontos.length; i++) {
+            let subconto = subcontos[i];
+            for (let j = 0; j < this.props.taskConfig.specConfig.length; j++) {
+                let spec = this.props.taskConfig.specConfig[j];
+                if (spec.autoByBarcoder === true && spec.objectSubcontoType === subconto.type) {
+                    // нашли нужное действие, проверяем его на выполнимость (check) и выполняем (run)
+                    return spec.generateTaskSpecAlgorithm("check", this, spec, subconto)
+                        .then((resultMessage: IMessage)=> {
+                            if (resultMessage.isError === true) {
+                                runMessage(resultMessage);
+                                return getInstantPromise<void>();
+                            }
+                            else {
+                                return spec.generateTaskSpecAlgorithm("run", this, spec, subconto)
+                                    .then((resultMessage: IMessage)=> {
+                                        runMessage(resultMessage);
+                                        return;
+                                    });
+
+                            }
+                        });
                 }
-                if (!this.isTargetPlacesStateOk()) {
-                    runMessage(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР);
-                    reject(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР.toast!);
-                }
+            }
+        }
 
-                // если source отсутствует (приемка), то требуется полное совпадение штрих-кода
-                if (this.props.taskConfig.sourcePlacesConfig === undefined || this.props.taskConfig.sourcePlacesConfig.allowedCount === "none") {
-                    if (subconto.length > 1) {
-                        runMessage(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ);
-                        reject(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ.toast!);
-                    }
-                }
-
-
-                let context: IGenerateTaskSpecContext = {
-                    runMode: "проверка",
-                    taskId: this.props.taskId,
-                    userId: this.props.userId,
-                    sourceType: this.getActiveSourcePlace().type,
-                    sourceId: this.getActiveSourcePlace().id,
-                    targetType: this.getActiveTargetPlace().type,
-                    targetId: this.getActiveTargetPlace().id,
-                    objectType: subconto[0].type,
-                    objectId: subconto[0].id,
-                    prihodDogId: this.dogId
-                }
-
-                // проверяем на корректность
-                this.props.taskConfig.generateTaskSpecAlgorithm(context)
-                    .then((checkResult: GenerateTaskSpecCheckResult)=> {
-                        if (checkResult === "ok") {
-                            context.runMode = "проведение";
-                            this.props.taskConfig.generateTaskSpecAlgorithm(context).then((checkResult: GenerateTaskSpecCheckResult) => {
-                                if (checkResult === "ok")
-                                    resolve();
-                                else
-                                    throw checkResult;
-
-                            });
-                        }
-                        else {
-                            runMessage({
-                                sound: "error.mp3",
-                                voice: checkResult,
-                                toast: checkResult,
-                            });
-                            resolve();
-                        }
-                    })
-                    .catch((error: any)=> {
-                        reject(error);
-                    });
-
-
-            });
-
+        // не нашли нужное действие
+        runMessage({
+            sound: "error.mp3",
+            voice: "Штрих код не подходит",
+            toast: "Штрих код не подходит"
+        });
+        return getInstantPromise<void>();
 
     }
 
-    getEmptyPlaceState(): IPlaceState {
-        let ret: IPlaceState = {
+    // handleSubcontoScan_old(subconto: ISubconto[]): Promise<void> {
+    //     return new Promise<void>(
+    //         (resolve: () => void, reject: (error: string) => void) => {
+    //
+    //             if (!this.isSourcePlacesStateOk()) {
+    //                 runMessage(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР);
+    //                 reject(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_ОТКУДА_БРАТЬ_ТОВАР.toast!);
+    //             }
+    //             if (!this.isTargetPlacesStateOk()) {
+    //                 runMessage(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР);
+    //                 reject(СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР.toast!);
+    //             }
+    //
+    //             // если source отсутствует (приемка), то требуется полное совпадение штрих-кода
+    //             if (this.props.taskConfig.sourcePlacesConfig === undefined || this.props.taskConfig.sourcePlacesConfig.allowedCount === "none") {
+    //                 if (subconto.length > 1) {
+    //                     runMessage(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ);
+    //                     reject(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ.toast!);
+    //                 }
+    //             }
+    //
+    //
+    //             let context: IGenerateTaskSpecContext = {
+    //                 runMode: "проверка",
+    //                 taskId: this.props.taskId,
+    //                 userId: this.props.userId,
+    //                 sourceType: this.getActiveSourcePlace().type,
+    //                 sourceId: this.getActiveSourcePlace().id,
+    //                 targetType: this.getActiveTargetPlace().type,
+    //                 targetId: this.getActiveTargetPlace().id,
+    //                 objectType: subconto[0].type,
+    //                 objectId: subconto[0].id,
+    //                 prihodDogId: this.dogId
+    //             }
+    //
+    //             // проверяем на корректность
+    //             // this.props.taskConfig.generateTaskSpecAlgorithm(context)
+    //             //     .then((checkResult: GenerateTaskSpecCheckResult)=> {
+    //             //         if (checkResult === "ok") {
+    //             //             context.runMode = "проведение";
+    //             //             this.props.taskConfig.generateTaskSpecAlgorithm(context).then((checkResult: GenerateTaskSpecCheckResult) => {
+    //             //                 if (checkResult === "ok")
+    //             //                     resolve();
+    //             //                 else
+    //             //                     throw checkResult;
+    //             //
+    //             //             });
+    //             //         }
+    //             //         else {
+    //             //             runMessage({
+    //             //                 sound: "error.mp3",
+    //             //                 voice: checkResult,
+    //             //                 toast: checkResult,
+    //             //             });
+    //             //             resolve();
+    //             //         }
+    //             //     })
+    //             //     .catch((error: any)=> {
+    //             //         reject(error);
+    //             //     });
+    //
+    //
+    //         });
+    //
+    //
+    // }
+
+    getEmptyPlaceState(): ITaskSourceTargetPlaceState {
+        let ret: ITaskSourceTargetPlaceState = {
             type: "Нет",
             id: 0,
             name: "",
@@ -227,16 +287,16 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
         return ret;
     }
 
-    getActiveSourcePlace(): IPlaceState {
-        let ret: IPlaceState = this.sourcePlaces.filter((item: IPlaceState)=>item.isActive)[0];
+    getActiveSourcePlace(): ITaskSourceTargetPlaceState {
+        let ret: ITaskSourceTargetPlaceState = this.sourcePlaces.filter((item: ITaskSourceTargetPlaceState)=>item.isActive)[0];
         if (ret === undefined)
             return this.getEmptyPlaceState();
         else
             return ret;
     }
 
-    getActiveTargetPlace(): IPlaceState {
-        let ret: IPlaceState = this.targetPlaces.filter((item: IPlaceState)=>item.isActive)[0];
+    getActiveTargetPlace(): ITaskSourceTargetPlaceState {
+        let ret: ITaskSourceTargetPlaceState = this.targetPlaces.filter((item: ITaskSourceTargetPlaceState)=>item.isActive)[0];
         if (ret === undefined)
             return this.getEmptyPlaceState();
         else
@@ -310,7 +370,6 @@ WHERE
 
 export class TaskStep {
     isCompleted: boolean;
-    action: TaskAction;
     objectType: string;
     objectId: number;
     objectName: string;
@@ -470,7 +529,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
             }
         }
         else {
-            this.state.targetPlaces.forEach((target: IPlaceState, index: number)=> {
+            this.state.targetPlaces.forEach((target: ITaskSourceTargetPlaceState, index: number)=> {
 
                 let isActive: any = null;
                 if (target.isActive)
@@ -499,7 +558,8 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         return (
             <List>
                 <ListItem itemDivider>
-                    <Text style={{ color:"dimgray"}}>{this.props.taskConfig.targetPlacesConfig!.title.toUpperCase()}</Text>
+                    <Text
+                        style={{ color:"dimgray"}}>{this.props.taskConfig.targetPlacesConfig!.title.toUpperCase()}</Text>
                 </ListItem>
                 {ret}
             </List>
@@ -514,6 +574,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
                 title={"Задание "+this.props.taskId}
                 onGetBarcode={(barcode: string, type: string)=>{ this.state.handleBarcodeScan(barcode);}}
                 onGetVoiceText={( text: string)=>{ this.state.handleVoiceText(text); }}
+                onContextMenu={()=>{ this.state.handleContextMenu(); }}
             >
                 {this.renderTaskHeader()}
                 {this.renderTargets()}

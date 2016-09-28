@@ -5,6 +5,7 @@ import {IMessage} from "../interfaces/IMessage";
 import {taskSpecAlgo_ВзятьПаллетуВЗадание} from "../taskSpecAlgorithms/taskSpecAlgo_ВзятьПалетуВЗадание";
 import {РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ} from "../constants/registers";
 import {ICommand} from "../commander/commander";
+import {BuhtaTaskContextBarcoderScene} from "../scenes/BuhtaTaskContextBarcoderScene";
 
 export interface ITaskTargetSourcePlacesConfig {
     register: string;
@@ -22,7 +23,7 @@ export interface ITaskConfig {
     //needFullObjectBarcode:boolean;  // для приемки
     sourcePlacesConfig?: ITaskTargetSourcePlacesConfig;
     targetPlacesConfig?: ITaskTargetSourcePlacesConfig;
-    // objectSubconto: string[];
+    // objectSubcontoType: string[];
 
     stepsTitle: string;
     specConfig: ITaskSpecConfig[];
@@ -32,15 +33,19 @@ export interface ITaskConfig {
 export interface ITaskSpecConfig {
     taskSpecName: string;
     докспецВид: number;
-    objectSubconto: string;
+    objectSubcontoType: string;
     generateTaskSpecAlgorithm: IGenerateTaskSpecAlgorithm;
+    autoByBarcoder: boolean;
     voiceCommand?: ICommand;
+    showInContextMenu: boolean;
+    contextMenuScene?: Function;
+    contextMenuSceneTitle?: string;
 }
 
 
 export let TaskConfigs: ITaskConfig[] = [];
 
-let Приемка_Товара: ITaskConfig = {
+export let Приемка_Товара: ITaskConfig = {
     taskName: "Приемка товара",
     документВид: 15000,
     sourcePlacesConfig: undefined,
@@ -59,27 +64,32 @@ let Приемка_Товара: ITaskConfig = {
 }
 
 let Прием_товара_на_паллету: ITaskSpecConfig = {
-    taskSpecName: "Прием товара",
+    taskSpecName: "Принять товар",
     докспецВид: 1,
-    objectSubconto: "ТМЦ",
+    objectSubcontoType: "ТМЦ",
+    autoByBarcoder: true,
     generateTaskSpecAlgorithm: taskSpecAlgo_Приемка,
+    showInContextMenu: false,
     voiceCommand: {
         words: "товар",
         number: "REQ"
     }
 }
-
 Приемка_Товара.specConfig.push(Прием_товара_на_паллету);
 
 let Взять_паллету_в_задание: ITaskSpecConfig = {
-    taskSpecName: "Взята паллета в задание",
+    taskSpecName: "Взять паллету в задание",
     докспецВид: 2,
-    objectSubconto: "PAL",
+    objectSubcontoType: "PAL",
+    autoByBarcoder: false,
     generateTaskSpecAlgorithm: taskSpecAlgo_ВзятьПаллетуВЗадание,
+    showInContextMenu: true,
     voiceCommand: {
         words: "взять паллету",
         number: "REQ"
-    }
+    },
+    contextMenuScene: BuhtaTaskContextBarcoderScene,
+    contextMenuSceneTitle: "Отсканируйте штрих-код паллеты"
 }
 Приемка_Товара.specConfig.push(Взять_паллету_в_задание);
 

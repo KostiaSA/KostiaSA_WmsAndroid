@@ -13,6 +13,7 @@ import {
     СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР
 } from "../constants/messages";
 import {taskSpecAlgo_Приемка} from "../taskSpecAlgorithms/taskSpecAlgo_Приемка";
+import {Приемка_Товара} from "../config/Tasks";
 //import Cipher = CryptoJS.Cipher;
 
 export interface IBuhtaLoginSceneProps extends IBuhtaCoreSceneProps {
@@ -45,21 +46,8 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
         let sceneProps: IBuhtaTaskSceneProps = {
             taskId: 370683,
             userId: 1,
-            action: "приемка",
             navigator: this.props.navigator,
-        //    sourcePlacesConfig: {allowedSubcontos: [], allowedCount: "none", title: "", placesNotReadyErrorMessage: ""placesNotReadyText},
-            taskConfig: {
-                targetPlacesConfig: {
-                    allowedSubcontos: ["PAL", "CEL"],
-                    allowedCount: "single",
-                    title: "Куда принимаем товар",
-                    placesNotReadyErrorMessage: СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР,
-                    placesNotReadyText: "Выберите паллету, куда принимать товар"
-                },
-                objectAllowedSubcontos: ["ТМЦ"],
-                stepsTitle: "Список товара",
-                generateTaskSpecAlgorithm: taskSpecAlgo_Приемка
-            }
+            taskConfig: Приемка_Товара
         }
 
 

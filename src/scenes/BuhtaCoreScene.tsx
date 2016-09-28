@@ -22,12 +22,13 @@ import {ITaskConfig} from "../config/Tasks";
 
 let voice = Voice as any;
 
-export interface IBuhtaCoreSceneProps extends React.ClassAttributes<any>{
+export interface IBuhtaCoreSceneProps extends React.ClassAttributes<any> {
     navigator: Navigator;
     title?: string;
     backIcon?: string;
     onGetBarcode?: (barcode: string, type: string)=>void;
     onGetVoiceText?: (text: string)=>void;
+    onContextMenu?: ()=>void;
 }
 
 export class BuhtaCoreSceneState<TProps extends IBuhtaCoreSceneProps> {
@@ -36,6 +37,7 @@ export class BuhtaCoreSceneState<TProps extends IBuhtaCoreSceneProps> {
         this.scene = scene;
         this.barcodeButtonVisible = _.isFunction(props.onGetBarcode);
         this.voiceButtonVisible = _.isFunction(props.onGetVoiceText);
+        this.contextMenuButtonVisible = _.isFunction(props.onContextMenu);
     }
 
     isMounted: boolean;
@@ -43,6 +45,7 @@ export class BuhtaCoreSceneState<TProps extends IBuhtaCoreSceneProps> {
     props: TProps;
     barcodeButtonVisible: boolean;
     voiceButtonVisible: boolean;
+    contextMenuButtonVisible: boolean;
 
     scannedBarcode: string;
     scannedBarcodeType: string;
@@ -96,6 +99,11 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
                 if (this.props.onGetVoiceText !== undefined)
                     this.props.onGetVoiceText(text);
             });
+    }
+
+    handleContextMenuButtonPress = () => {
+        if (this.props.onContextMenu !== undefined)
+            this.props.onContextMenu();
     }
 
     openCameraScanner(navigator: Navigator): Promise<{barcode: string,type: string}> {
@@ -176,6 +184,17 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
             return null;
     }
 
+    renderContextMenuButton(): JSX.Element | null {
+        if (this.state.contextMenuButtonVisible)
+            return (
+                <Button transparent onPress={this.handleContextMenuButtonPress}>
+                    <Icon style={{fontSize: 18, color: "white"}} name="bars"/>
+                </Button>
+            );
+        else
+            return null;
+    }
+
     navigatorAnimationIsDone: boolean;
 
     componentDidMount() {
@@ -214,10 +233,8 @@ export class BuhtaCoreScene<TProps extends IBuhtaCoreSceneProps,TState extends B
 
                     {this.renderBarcodeButton()}
                     {this.renderVoiceButton()}
+                    {this.renderContextMenuButton()}
 
-                    <Button transparent>
-                        <Icon style={{fontSize: 18, color: "white"}} name="bars"/>
-                    </Button>
                 </Header>
                 {this.renderContent()}
             </Container>
