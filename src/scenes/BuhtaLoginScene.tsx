@@ -48,16 +48,18 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
             action: "приемка",
             navigator: this.props.navigator,
         //    sourcePlacesConfig: {allowedSubcontos: [], allowedCount: "none", title: "", placesNotReadyErrorMessage: ""placesNotReadyText},
-            targetPlacesConfig: {
-                allowedSubcontos: ["PAL", "CEL"],
-                allowedCount: "single",
-                title: "Куда принимаем товар",
-                placesNotReadyErrorMessage: СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР,
-                placesNotReadyText:"Выберите паллету, куда принимать товар"
-            },
-            objectAllowedSubcontos: ["ТМЦ"],
-            stepsTitle: "Список товара",
-            generateTaskSpecAlgorithm: taskSpecAlgo_Приемка
+            taskConfig: {
+                targetPlacesConfig: {
+                    allowedSubcontos: ["PAL", "CEL"],
+                    allowedCount: "single",
+                    title: "Куда принимаем товар",
+                    placesNotReadyErrorMessage: СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР,
+                    placesNotReadyText: "Выберите паллету, куда принимать товар"
+                },
+                objectAllowedSubcontos: ["ТМЦ"],
+                stepsTitle: "Список товара",
+                generateTaskSpecAlgorithm: taskSpecAlgo_Приемка
+            }
         }
 
 

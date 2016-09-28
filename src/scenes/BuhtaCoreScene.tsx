@@ -18,9 +18,11 @@ import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
 
 import Voice from 'react-native-voice';
 import {throwError} from "../core/Error";
+import {ITaskConfig} from "../config/Tasks";
+
 let voice = Voice as any;
 
-export interface IBuhtaCoreSceneProps extends React.ClassAttributes<any> {
+export interface IBuhtaCoreSceneProps extends React.ClassAttributes<any>{
     navigator: Navigator;
     title?: string;
     backIcon?: string;

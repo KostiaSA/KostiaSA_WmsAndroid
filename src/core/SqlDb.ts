@@ -9,7 +9,7 @@ import crypto from "crypto-js";
 // import {SelectStmt} from "./SelectStmt";
 // import {SqlDialect, SqlStmt} from "./SqlCore";
 import {getConnectionId} from "./getConnectionId";
-import {getBuhtaServerAddress, getBuhtaServerKey} from "./config";
+import {getBuhtaServerAddress, getBuhtaServerKey} from "../config/BuhtaServer";
 import {showDevError} from "./showDevError";
 //import {checkAuth} from "./Auth";
 //import {socket} from "./Socket";

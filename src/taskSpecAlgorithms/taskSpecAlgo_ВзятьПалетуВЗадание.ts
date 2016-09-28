@@ -6,19 +6,11 @@ import {РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ, РЕГИСТР_ОСТ
 import {pushSpeak} from "../core/speak";
 import {DataTable} from "../core/SqlDb";
 
-export function taskSpecAlgo_Приемка(context: IGenerateTaskSpecContext): Promise<void> {
+export function taskSpecAlgo_ВзятьПаллетуВЗадание(context: IGenerateTaskSpecContext): Promise<void> {
     let ostFields=[
-        ["Счет", stringAsSql(РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ)],
+        ["Счет", stringAsSql(РЕГИСТР_ОСТАТОК)],
         ["ОбъектТип", stringAsSql(context.objectType)],
         ["Объект", context.objectId],
-        ["ДоговорПриходаТип", "'Дог'"],
-        ["ДоговорПрихода", context.prihodDogId],
-        ["МестоТип", stringAsSql("Нет")],
-        ["Место", 0],
-        ["ЗаданиеТип", "'Док'"],
-        ["Задание", context.taskId],
-        ["СотрудникТип", "'Нет'"],
-        ["Сотрудник", 0],
     ]
 
     let fields = [

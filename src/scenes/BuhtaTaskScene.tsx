@@ -22,32 +22,27 @@ import {IGenerateTaskSpecAlgorithm} from "../interfaces/IGenerateTaskSpecAlgorit
 import {IGenerateTaskSpecContext, GenerateTaskSpecCheckResult} from "../interfaces/IGenerateTaskSpecContext";
 import {throwError} from "../core/Error";
 import {ICommand, getBestMatchCommand} from "../commander/commander";
+import {ITaskConfig} from "../config/Tasks";
 
 
 let Text = Text_ as any;
 
 export type TaskAction ="подбор" | "размещение" | "приемка";
 
-export interface IPlacesConfig {
-    allowedSubcontos: string[];
-    allowedCount: "none" | "single" | "multi";
-    title: string;
-    placesNotReadyErrorMessage: IMessage;
-    placesNotReadyText: string;
-}
 
 export interface IBuhtaTaskSceneProps extends IBuhtaCoreSceneProps {
+    taskConfig: ITaskConfig;
     taskId: number;
     userId: number;
     action: TaskAction;
     //needFullObjectBarcode:boolean;  // для приемки
-    sourcePlacesConfig?: IPlacesConfig;
-    targetPlacesConfig?: IPlacesConfig;
-    objectAllowedSubcontos: string[];
+    //sourcePlacesConfig?: ITaskTargetSourcePlacesConfig;
+    //targetPlacesConfig?: ITaskTargetSourcePlacesConfig;
+    //objectSubconto: string[];
 
-    stepsTitle: string;
+    //stepsTitle: string;
 
-    generateTaskSpecAlgorithm: IGenerateTaskSpecAlgorithm;
+    //generateTaskSpecAlgorithm: IGenerateTaskSpecAlgorithm;
 }
 
 export interface IPlaceState {
@@ -69,25 +64,25 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
 
 
     isSourcePlacesStateOk(): boolean {
-        if (this.props.sourcePlacesConfig === undefined)
+        if (this.props.taskConfig.sourcePlacesConfig === undefined)
             return true;
-        if (this.props.sourcePlacesConfig.allowedCount === "none")
+        if (this.props.taskConfig.sourcePlacesConfig.allowedCount === "none")
             return true;
-        if (this.props.sourcePlacesConfig.allowedCount === "single" && this.sourcePlaces.length === 1)
+        if (this.props.taskConfig.sourcePlacesConfig.allowedCount === "single" && this.sourcePlaces.length === 1)
             return true;
-        if (this.props.sourcePlacesConfig.allowedCount === "multi" && this.sourcePlaces.length >= 1)
+        if (this.props.taskConfig.sourcePlacesConfig.allowedCount === "multi" && this.sourcePlaces.length >= 1)
             return true;
         return false;
     }
 
     isTargetPlacesStateOk(): boolean {
-        if (this.props.targetPlacesConfig === undefined)
+        if (this.props.taskConfig.targetPlacesConfig === undefined)
             return true;
-        if (this.props.targetPlacesConfig.allowedCount === "none")
+        if (this.props.taskConfig.targetPlacesConfig.allowedCount === "none")
             return true;
-        if (this.props.targetPlacesConfig.allowedCount === "single" && this.targetPlaces.length === 1)
+        if (this.props.taskConfig.targetPlacesConfig.allowedCount === "single" && this.targetPlaces.length === 1)
             return true;
-        if (this.props.targetPlacesConfig.allowedCount === "multi" && this.targetPlaces.length >= 1)
+        if (this.props.taskConfig.targetPlacesConfig.allowedCount === "multi" && this.targetPlaces.length >= 1)
             return true;
         return false;
     }
@@ -137,11 +132,11 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
             number: "REQ"
         })
 
-        getBestMatchCommand(commandList,voiceText);
+        getBestMatchCommand(commandList, voiceText);
     }
 
     handleBarcodeScan(barcode: string): Promise<void> {
-        return getSubcontoFromFullBarcode(barcode, this.props.objectAllowedSubcontos)
+        return getSubcontoFromFullBarcode(barcode, this.props.taskConfig.objectAllowedSubcontos)
             .then((subconto: ISubconto[])=> {
                 if (subconto.length === 0) {
                     runMessage(СООБЩЕНИЕ_ШТРИХ_КОД_НЕ_НАЙДЕН);
@@ -169,7 +164,7 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
                 }
 
                 // если source отсутствует (приемка), то требуется полное совпадение штрих-кода
-                if (this.props.sourcePlacesConfig === undefined || this.props.sourcePlacesConfig.allowedCount === "none") {
+                if (this.props.taskConfig.sourcePlacesConfig === undefined || this.props.taskConfig.sourcePlacesConfig.allowedCount === "none") {
                     if (subconto.length > 1) {
                         runMessage(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ);
                         reject(СООБЩЕНИЕ_НАЙДЕНО_НЕСКОЛЬКО_ШТРИХ_КОДОВ.toast!);
@@ -191,11 +186,11 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
                 }
 
                 // проверяем на корректность
-                this.props.generateTaskSpecAlgorithm(context)
+                this.props.taskConfig.generateTaskSpecAlgorithm(context)
                     .then((checkResult: GenerateTaskSpecCheckResult)=> {
                         if (checkResult === "ok") {
                             context.runMode = "проведение";
-                            this.props.generateTaskSpecAlgorithm(context).then((checkResult: GenerateTaskSpecCheckResult) => {
+                            this.props.taskConfig.generateTaskSpecAlgorithm(context).then((checkResult: GenerateTaskSpecCheckResult) => {
                                 if (checkResult === "ok")
                                     resolve();
                                 else
@@ -427,7 +422,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
             return (
                 <List>
                     <ListItem itemDivider>
-                        <Text style={{ color:"dimgray"}}>{this.props.stepsTitle.toUpperCase()}</Text>
+                        <Text style={{ color:"dimgray"}}>{this.props.taskConfig.stepsTitle.toUpperCase()}</Text>
                     </ListItem>
                     {steps}
                 </List>
@@ -436,7 +431,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
             return (
                 <List>
                     <ListItem itemDivider>
-                        <Text style={{ color:"dimgray"}}>{this.props.stepsTitle.toUpperCase()}</Text>
+                        <Text style={{ color:"dimgray"}}>{this.props.taskConfig.stepsTitle.toUpperCase()}</Text>
                     </ListItem>
                     <Text> загрузка... </Text>
                 </List>
@@ -462,13 +457,13 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         let ret: JSX.Element[] = [];
 
         if (this.state.targetPlaces.length === 0) {
-            if (this.props.targetPlacesConfig === undefined || this.props.targetPlacesConfig.allowedCount === "none") {
+            if (this.props.taskConfig.targetPlacesConfig === undefined || this.props.taskConfig.targetPlacesConfig.allowedCount === "none") {
                 return null;
             }
             else {
                 ret.push(
                     <ListItem iconRight button onPress={()=>{this.state.handleTargetPlaceClick(0)}}>
-                        <Text>{this.props.targetPlacesConfig.placesNotReadyText}</Text>
+                        <Text>{this.props.taskConfig.targetPlacesConfig.placesNotReadyText}</Text>
                         <Icon name="bullseye" style={{fontSize: 20, color: "red"}}/>
                     </ListItem>
                 );
@@ -504,7 +499,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         return (
             <List>
                 <ListItem itemDivider>
-                    <Text style={{ color:"dimgray"}}>{this.props.targetPlacesConfig!.title.toUpperCase()}</Text>
+                    <Text style={{ color:"dimgray"}}>{this.props.taskConfig.targetPlacesConfig!.title.toUpperCase()}</Text>
                 </ListItem>
                 {ret}
             </List>
