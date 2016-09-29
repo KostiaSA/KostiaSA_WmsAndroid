@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {View, Text, Route, Navigator} from "react-native";
+import {View, Text, Route, Navigator, Image} from "react-native";
 import {Button, Icon} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, BuhtaCoreSceneState} from "./BuhtaCoreScene";
 import {BuhtaMainMenuScene} from "./BuhtaMainMenuScene";
@@ -109,6 +109,7 @@ export class BuhtaLoginScene extends BuhtaCoreScene<IBuhtaLoginSceneProps, Buhta
                 <Button success onPress={this.handleTestTaskButtonPress}>Тест task-task-task</Button>
                 <Button success onPress={this.handleTestEncrypt}>Тест encrypt</Button>
                 <Button success onPress={this.handleTestSound}>Тест sound</Button>
+                <Image source={require("../img/pallete.png")}/>
 
             </BuhtaCoreScene>);
     }

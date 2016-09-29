@@ -1,7 +1,7 @@
 import * as _ from "lodash";
 
 import React, {Component} from "react";
-import {View, Route, ListView, TouchableHighlight, TouchableNativeFeedback} from "react-native";
+import {View, Route, ListView, TouchableHighlight, TouchableNativeFeedback, Image} from "react-native";
 import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, BuhtaCoreSceneState} from "./BuhtaCoreScene";
 import {getDb} from "../core/getDb";
@@ -44,6 +44,7 @@ export interface ITaskSourceTargetPlaceState {
     type: string;
     id: number;
     name: string;
+    kol: number;
     isActive: boolean;
 }
 
@@ -284,6 +285,7 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
             type: "Нет",
             id: 0,
             name: "",
+            kol: 0,
             isActive: true
         };
         return ret;
@@ -313,13 +315,13 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     isStepsLoaded: boolean;
 
 
-    loadIncompletedStepsFromSql() {
+    loadAllInfoFromSql() {
 
         let sql = `
 -- набор 0 шапка        
 SELECT 
    Номер,
-   ДокументДоговор     
+   Договор     
 FROM Задание 
 WHERE Ключ=${this.props.taskId}    
         
@@ -349,7 +351,8 @@ WHERE
 SELECT 
    ОбъектТип,
    Объект,
-   dbo.СубконтоНазвание(ОбъектТип,Объект) ОбъектНазвание
+   dbo.СубконтоНазвание(ОбъектТип,Объект) ОбъектНазвание,
+   dbo.СубконтоХранитКоличество(ОбъектТип,Объект) Количество
 FROM Остаток
 WHERE 
    Счет=${stringAsSql(РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ)} AND
@@ -364,7 +367,7 @@ WHERE
 
                 // набор 0 шапка
                 let taskRow = tables[0].rows[0];
-                this.dogId = taskRow.value("ДокументДоговор");
+                this.dogId = taskRow.value("Договор");
 
                 // набор 1 состав задания
                 this.steps = [];
@@ -376,13 +379,19 @@ WHERE
                 }, this);
 
                 // набор 2 targets
+                let old_active = this.targetPlaces.filter((item: ITaskSourceTargetPlaceState)=>item.isActive)[0];
+                let old_active_id = -1;
+                if (old_active !== undefined)
+                    old_active_id = old_active.id;
+
                 this.targetPlaces = [];
                 tables[2].rows.forEach((row: DataRow, index: number)=> {
                     let target: ITaskSourceTargetPlaceState = {
                         type: row.value("ОбъектТип"),
                         id: row.value("Объект"),
                         name: row.value("ОбъектНазвание"),
-                        isActive: index === 0
+                        kol: row.value("Количество"),
+                        isActive: (old_active_id === -1 && index === 0) || (old_active_id === index)
                     };
                     this.targetPlaces.push(target);
                 }, this);
@@ -488,7 +497,7 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
 
     componentDidMount() {
         super.componentDidMount();
-        this.state.loadIncompletedStepsFromSql();
+        this.state.loadAllInfoFromSql();
     };
 
 
@@ -574,9 +583,14 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
                 if (target.isActive === true)
                     iconColor = "green";
 
+                let targetKolStr = "  (пустая)";
+                if (target.kol > 0)
+                    targetKolStr = "  (" + target.kol + " мест.)";
+
                 ret.push(
                     <ListItem iconRight key={index} button onPress={()=>{this.state.handleTargetPlaceClick(index)}}>
-                        <Text>{target.name}</Text>
+
+                        <Text><Image source={require("../img/pallete.png")}/>  {target.name}{targetKolStr}</Text>
                         <Icon name="bullseye" style={{fontSize: 20, color: iconColor}}/>
                     </ListItem>
 
