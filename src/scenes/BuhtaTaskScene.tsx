@@ -28,6 +28,8 @@ import {BuhtaTaskContextMenuScene, IBuhtaTaskContextMenuSceneProps} from "./Buht
 import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
 import {getInstantPromise} from "../core/getInstantPromise";
 import {IMessage} from "../interfaces/IMessage";
+import {stringAsSql} from "../core/SqlCore";
+import {РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ, РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ} from "../constants/registers";
 
 
 let Text = Text_ as any;
@@ -314,12 +316,14 @@ export class BuhtaTaskSceneState extends BuhtaCoreSceneState<IBuhtaTaskSceneProp
     loadIncompletedStepsFromSql() {
 
         let sql = `
+-- набор 0 шапка        
 SELECT 
    Номер,
    ДокументДоговор     
 FROM Задание 
 WHERE Ключ=${this.props.taskId}    
         
+-- набор 1 состав задания       
 SELECT 
    Счет,
    МестоТип,
@@ -335,12 +339,22 @@ SELECT
    Количество,
    dbo.СубконтоНазвание(МестоТип,Место) МестоНазвание,
    dbo.СубконтоНазвание(ОбъектТип,Объект) ОбъектНазвание
-   
 FROM Остаток
 WHERE 
+   Счет=${stringAsSql(РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ)} AND
    ЗаданиеТип='Док' AND Задание=${this.props.taskId} AND
-   ((СотрудникТип='Чел' AND Сотрудник=${this.props.userId}) OR (СотрудникТип='Нет') )  
-        `;
+   ((СотрудникТип='Чел' AND Сотрудник=${this.props.userId}) OR (СотрудникТип='Нет') )
+     
+-- набор 2 targets        
+SELECT 
+   ОбъектТип,
+   Объект,
+   dbo.СубконтоНазвание(ОбъектТип,Объект) ОбъектНазвание
+FROM Остаток
+WHERE 
+   Счет=${stringAsSql(РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ)} AND
+   ЗаданиеТип='Док' AND Задание=${this.props.taskId}      
+    `;
 
         getDb().executeSQL(sql)
             .then((tables: DataTable[])=> {
@@ -348,20 +362,38 @@ WHERE
                 if (tables[0].rows.length === 0) //  не найдено
                     throwError("не найдено задание с ключом " + this.props.taskId);
 
+                // набор 0 шапка
                 let taskRow = tables[0].rows[0];
-                this.dogId = taskRow["ДокументДоговор"];
+                this.dogId = taskRow.value("ДокументДоговор");
 
-                this.steps.length = 0;
+                // набор 1 состав задания
+                this.steps = [];
                 tables[1].rows.forEach((row: DataRow)=> {
                     let step = new TaskStep_Приемка();
-                    step.objectName = row["ОбъектНазвание"];
-                    step.kol = row["Количество"];
+                    step.objectName = row.value("ОбъектНазвание");
+                    step.kol = row.value("Количество");
                     this.steps.push(step);
+                }, this);
+
+                // набор 2 targets
+                this.targetPlaces = [];
+                tables[2].rows.forEach((row: DataRow, index: number)=> {
+                    let target: ITaskSourceTargetPlaceState = {
+                        type: row.value("ОбъектТип"),
+                        id: row.value("Объект"),
+                        name: row.value("ОбъектНазвание"),
+                        isActive: index === 0
+                    };
+                    this.targetPlaces.push(target);
                 }, this);
 
                 this.isStepsLoaded = true;
                 if (this.isMounted)
                     this.scene.forceUpdate();
+            })
+            .catch((err: any)=> {
+                alert(err);
+                runMessage(СООБЩЕНИЕ_ОШИБКА);
             });
 
 
@@ -515,6 +547,13 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
     renderTargets = (): JSX.Element | null => {
         let ret: JSX.Element[] = [];
 
+        if (!this.state.isStepsLoaded)
+            return (
+                <ListItem iconRight button onPress={()=>{this.state.handleTargetPlaceClick(0)}}>
+                    <Text>загрузка...</Text>
+                </ListItem>
+            );
+
         if (this.state.targetPlaces.length === 0) {
             if (this.props.taskConfig.targetPlacesConfig === undefined || this.props.taskConfig.targetPlacesConfig.allowedCount === "none") {
                 return null;
@@ -531,29 +570,19 @@ export class BuhtaTaskScene extends BuhtaCoreScene<IBuhtaTaskSceneProps, BuhtaTa
         else {
             this.state.targetPlaces.forEach((target: ITaskSourceTargetPlaceState, index: number)=> {
 
-                let isActive: any = null;
-                if (target.isActive)
-                //isActive =<Text style={{ color:"limegreen"}}>активна</Text>;
-                    isActive =<Icon name="bullseye" style={{fontSize: 20, color: "green"}}/>
+                let iconColor = "transparent";
+                if (target.isActive === true)
+                    iconColor = "green";
 
                 ret.push(
                     <ListItem iconRight key={index} button onPress={()=>{this.state.handleTargetPlaceClick(index)}}>
                         <Text>{target.name}</Text>
-                        {isActive}
+                        <Icon name="bullseye" style={{fontSize: 20, color: iconColor}}/>
                     </ListItem>
 
                 );
             }, this);
         }
-        // this.state.targetPlaces.map()
-        //
-        // for (let i = 0; i <= 1; i++) {
-        //     ret.push(
-        //         <ListItem key={i} button onPress={()=>{this.state.handleTargetPlaceClick(i)}}>
-        //             <Text>Паллета 010{i}</Text>
-        //         </ListItem>
-        //     );
-        // }
 
         return (
             <List>
