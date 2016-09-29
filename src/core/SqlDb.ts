@@ -69,6 +69,7 @@ export interface ExecuteSqlBatchSocketAnswer {
 export class DataTable {
     columns: Array<DataColumn>;
     rows: Array<DataRow>;
+    sql: string;
 
     constructor() {
         this.columns = [];
@@ -97,6 +98,12 @@ export class DataRow {//extends DesignedObject {
     [index: string]: any;
     constructor(public $$table: DataTable) {
         //super();
+    }
+
+    value(columnName: string): any {
+        if (this[columnName] === undefined)
+            throw "не найдена колонка '" + columnName + "'\n\n" + this.$$table.sql;
+        return this[columnName];
     }
 
     $$getValue(columnIndex: number): any {
@@ -265,7 +272,7 @@ export class SqlDb {
 
     encryptSql(sql: string[]): string[] {
         return sql.map((item)=> {
-            return crypto.AES.encrypt(item, getBuhtaServerKey()+"AgFLsh23iGd").toString()
+            return crypto.AES.encrypt(item, getBuhtaServerKey() + "AgFLsh23iGd").toString()
         });
 
     }
@@ -285,7 +292,7 @@ export class SqlDb {
         };
 
         //console.log(this.dialect);
-        console.log(req.sql);
+        //console.log(req.sql);
 
 
         return fetch('http://' + getBuhtaServerAddress(), {
@@ -309,9 +316,10 @@ export class SqlDb {
                 }
                 else {
 
-                    console.log(json);
+                    //console.log(json);
                     let dataTables = json.answers!.map<DataTable>((response) => {
                         let dataTable = new DataTable();
+                        dataTable.sql = this.sqlBatchToStringArray(sql).join(";\n");
                         if (response.columns) {
                             for (let i = 0; i < response.columns!.length; i++) {
                                 let dataColumn = new DataColumn(dataTable);

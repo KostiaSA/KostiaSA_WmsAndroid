@@ -1,3 +1,4 @@
+import React from "react";
 import {IGenerateTaskSpecAlgorithm} from "../interfaces/IGenerateTaskSpecAlgorithm";
 import {СООБЩЕНИЕ_НЕ_ВЫБРАНА_ПАЛЛЕТА_КУДА_ПРИНИМАТЬ_ТОВАР} from "../constants/messages";
 import {taskSpecAlgo_Приемка} from "../taskSpecAlgorithms/taskSpecAlgo_Приемка";
@@ -38,7 +39,7 @@ export interface ITaskSpecConfig {
     autoByBarcoder: boolean;
     voiceCommand?: ICommand;
     showInContextMenu: boolean;
-    contextMenuScene?: Function;
+    contextMenuScene?: React.ComponentClass<React.ViewProperties>;
     contextMenuSceneTitle?: string;
 }
 

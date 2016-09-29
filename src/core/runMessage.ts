@@ -16,7 +16,7 @@ export function runLastMessage() {
 export function runMessage(message: IMessage, params?: IMessageParams) {
     lastMessage = message;
     lastParams = params;
-
+    
     if (params !== undefined) {
         if (params.p1 !== undefined) {
             if (message.sound !== undefined)

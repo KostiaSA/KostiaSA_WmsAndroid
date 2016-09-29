@@ -1,7 +1,10 @@
 import {emitFieldList, emitFieldList_forWhereSql} from "../core/emitSql";
 import {getDb} from "../core/getDb";
 import {stringAsSql} from "../core/SqlCore";
-import {РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ, РЕГИСТР_ОСТАТОК, РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ} from "../constants/registers";
+import {
+    РЕГИСТР_ЗАДАНИЕ_НА_ПРИЕМКУ, РЕГИСТР_ОСТАТОК, РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ,
+    РЕГИСТР_НОВЫЕ_ПАЛЛЕТЫ
+} from "../constants/registers";
 import {pushSpeak} from "../core/speak";
 import {DataTable} from "../core/SqlDb";
 import {BuhtaTaskSceneState} from "../scenes/BuhtaTaskScene";
@@ -11,11 +14,9 @@ import {IMessage} from "../interfaces/IMessage";
 import {getInstantPromise} from "../core/getInstantPromise";
 
 export function taskSpecAlgo_ВзятьПаллетуВЗадание(mode: "run"|"check", taskState: BuhtaTaskSceneState, taskSpecConfig: ITaskSpecConfig, palleteBarcode: ISubconto): Promise<IMessage> {
-    // if (mode === "check")
-    //   return getInstantPromise<IMessage>({isError: false});
 
     let ostFields = [
-        ["Счет", stringAsSql(РЕГИСТР_ОСТАТОК)],
+        ["Счет", stringAsSql(РЕГИСТР_НОВЫЕ_ПАЛЛЕТЫ)],
         ["ОбъектТип", stringAsSql(palleteBarcode.type)],
         ["Объект", palleteBarcode.id],
     ]
@@ -59,6 +60,7 @@ export function taskSpecAlgo_ВзятьПаллетуВЗадание(mode: "run
 
     return getDb().executeSQL(sql)
         .then((tables: DataTable[])=> {
+
             if (tables[0].rows.length !== 1)
                 return {
                     isError: true,
@@ -67,7 +69,7 @@ export function taskSpecAlgo_ВзятьПаллетуВЗадание(mode: "run
                     toast: "Системная ошибка"
                 };
 
-            let row=tables[0].rows[0];
+            let row = tables[0].rows[0];
 
             let fields = [
                 ["Дата", "@date"],
@@ -76,25 +78,25 @@ export function taskSpecAlgo_ВзятьПаллетуВЗадание(mode: "run
                 ["Сотрудник", taskState.props.userId],
                 ["Время", "dbo.ДатаБезВремени(@date)"],
 
-                ["КрСчет", row["Счет"]],
-                ["КрОбъектТип", row["КрОбъектТип"]],
-                ["КрОбъект", row["КрОбъект"]],
-                ["КрДоговорПриходаТип", row["КрДоговорПриходаТип"]],
-                ["КрДоговорПрихода", row["КрДоговорПрихода"]],
-                ["КрМестоТип", row["КрМестоТип"]],
-                ["КрМесто", row["КрМесто"]],
-                ["КрЗаданиеТип", row["КрЗаданиеТип"]],
-                ["КрЗадание", row["КрЗадание"]],
-                ["КрСотрудникТип", row["КрСотрудникТип"]],
-                ["КрСотрудник", row["КрСотрудник"]],
-                ["КрКоличество", row["КрКоличество"]],
+                ["КрСчет", stringAsSql(row.value("Счет"))],
+                ["КрОбъектТип", stringAsSql(row.value("ОбъектТип"))],
+                ["КрОбъект", row.value("Объект")],
+                ["КрДоговорПриходаТип", stringAsSql(row.value("ДоговорПриходаТип"))],
+                ["КрДоговорПрихода", row.value("ДоговорПрихода")],
+                ["КрМестоТип", stringAsSql(row.value("МестоТип"))],
+                ["КрМесто", row.value("Место")],
+                ["КрЗаданиеТип", stringAsSql(row.value("ЗаданиеТип"))],
+                ["КрЗадание", row.value("Задание")],
+                ["КрСотрудникТип", stringAsSql(row.value("СотрудникТип"))],
+                ["КрСотрудник", row.value("Сотрудник")],
+                ["КрКоличество", row.value("Количество")],
 
                 ["ДбСчет", stringAsSql(РЕГИСТР_ПАЛЛЕТА_В_ЗАДАНИИ)],
                 ["ДбОбъектТип", stringAsSql(palleteBarcode.type)],
                 ["ДбОбъект", palleteBarcode.id],
                 ["ДбЗаданиеТип", stringAsSql("Док")],
                 ["ДбЗадание", taskState.props.taskId],
-                ["ДбКоличество",  row["КрКоличество"]],
+                ["ДбКоличество", row.value("Количество")],
             ];
 
             let sql = `
@@ -102,12 +104,19 @@ DECLARE @date DATETIME=GETDATE()
 INSERT ЗаданиеСпец(${ emitFieldList(fields, "target")}) 
 SELECT ${ emitFieldList(fields, "source")}`;
 
-            return getDb().executeSQL(sql).then(()=> {
+            return getDb().executeSQL(sql)
+                .then(()=> {
+                    return {
+                        voice: "Палета взята в работу",
+                        toast: "Паллета взята в работу"
+                    };
+                })
+            .catch(()=> {
                 return {
                     isError: true,
-                    sound: "",
-                    voice: "Палета взята в работу",
-                    toast: "Паллета взята в работу"
+                    sound: "error.mp3",
+                    voice: "непонятно",
+                    toast: "непонятно"
                 };
             });
 

@@ -4,6 +4,7 @@ import {Button, Icon, List, ListItem, Badge, Text as Text_} from "native-base";
 import {BuhtaCoreScene, IBuhtaCoreSceneProps, BuhtaCoreSceneState} from "./BuhtaCoreScene";
 import {BuhtaTaskSceneState} from "./BuhtaTaskScene";
 import {ITaskSpecConfig} from "../config/Tasks";
+import {getNavigatorNoTransition} from "../core/getNavigatorNoTransition";
 
 
 export interface IBuhtaTaskContextMenuSceneProps extends IBuhtaCoreSceneProps {
@@ -16,14 +17,34 @@ export class IBuhtaTaskContextMenuSceneState extends BuhtaCoreSceneState<IBuhtaT
 
 export class BuhtaTaskContextMenuScene extends BuhtaCoreScene<IBuhtaTaskContextMenuSceneProps, IBuhtaTaskContextMenuSceneState> {
 
+    handlePress = (spec: ITaskSpecConfig)=> {
+
+        let sceneProps= {
+            navigator: this.props.navigator,
+            title: spec.contextMenuSceneTitle,
+            taskState: this.props.taskSceneState,
+            taskSpecConfig: spec
+        }
+
+        let route: Route = {
+            component: spec.contextMenuScene,
+            passProps: sceneProps,
+            sceneConfig: getNavigatorNoTransition(),
+        };
+
+        this.props.navigator.push(route);
+
+    }
+
+
     renderItems = (): JSX.Element[]=> {
         let Text = Text_ as any;
         let ret: JSX.Element[] = [];
 
         this.props.taskSceneState.props.taskConfig.specConfig.forEach((spec: ITaskSpecConfig, index: number)=> {
-            if (spec.showInContextMenu===true) {
+            if (spec.showInContextMenu === true) {
                 ret.push(
-                    <ListItem key={index} button onPress={()=>{alert("ok")}}>
+                    <ListItem key={index} button onPress={()=>{ this.handlePress(spec)}}>
                         <Text>{spec.taskSpecName}</Text>
                     </ListItem>
                 );
