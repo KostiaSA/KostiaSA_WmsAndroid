@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/C:/BuhtaWms2017/WmsAndroid/node_modules/react-native-android-speech/src/main/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">react-native-speech</string>
+</resources>

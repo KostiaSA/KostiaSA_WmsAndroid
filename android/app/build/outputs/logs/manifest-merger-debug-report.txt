@@ -1,0 +1,338 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:1:1-32:12
+	package
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:2:5-27
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+	android:versionName
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:4:5-30
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+	android:versionCode
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:3:5-28
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:1:11-69
+uses-permission#android.permission.INTERNET
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:6:5-67
+MERGED from [BuhtaWMS:VoiceModule:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\VoiceModule\unspecified\AndroidManifest.xml:14:5-67
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:6:22-64
+uses-permission#android.permission.VIBRATE
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:7:5-65
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:7:22-63
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:8:5-77
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:11:5-78
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:11:5-78
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:8:22-75
+uses-sdk
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:10:5-12:41
+MERGED from [BuhtaWMS:react-native-vector-icons:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-vector-icons\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.0.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.0.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [BuhtaWMS:VoiceModule:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\VoiceModule\unspecified\AndroidManifest.xml:8:5-11:54
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.0.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.0.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [BuhtaWMS:react-native-android-speech:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-android-speech\unspecified\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.0.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+MERGED from [BuhtaWMS:RNSound:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\RNSound\unspecified\AndroidManifest.xml:9:5-11:41
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-okhttp3\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fresco:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fresco\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\drawee\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\imagepipeline-base\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.fresco:fbcore:0.11.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.fresco\fbcore\0.11.0\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:recyclerview-v7:23.0.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:20:5-43
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:2:3-70
+	tools:overrideLibrary
+		ADDED from [BuhtaWMS:VoiceModule:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\VoiceModule\unspecified\AndroidManifest.xml:11:9-51
+	android:targetSdkVersion
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:12:9-38
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:11:9-35
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml
+application
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:14:5-30:19
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:13:5-20
+MERGED from [org.webkit:android-jsc:r174650] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:13:5-20
+MERGED from [org.webkit:android-jsc:r174650] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:13:5-20
+MERGED from [org.webkit:android-jsc:r174650] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:13:5-20
+MERGED from [org.webkit:android-jsc:r174650] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [BuhtaWMS:react-native-android-speech:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-android-speech\unspecified\AndroidManifest.xml:11:5-14:19
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:13:5-20
+MERGED from [org.webkit:android-jsc:r174650] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+MERGED from [com.facebook.react:react-native:0.32.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.react\react-native\0.32.1\AndroidManifest.xml:13:5-20
+MERGED from [org.webkit:android-jsc:r174650] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\org.webkit\android-jsc\r174650\AndroidManifest.xml:2:3-17
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:23.1.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\23.1.1\AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:support-v4:23.2.1] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.2.1\AndroidManifest.xml:22:5-20
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\com.facebook.soloader\soloader\0.1.0\AndroidManifest.xml:3:3-17
+	android:label
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:17:7-39
+	android:allowBackup
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:16:7-33
+	android:icon
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:18:7-41
+	android:theme
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:19:7-38
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:15:7-38
+activity#com.buhtawms.MainActivity
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:20:7-28:18
+	android:label
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:22:9-41
+	android:configChanges
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:23:9-79
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:21:9-37
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:24:9-27:25
+action#android.intent.action.MAIN
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:25:13-65
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:25:21-62
+category#android.intent.category.LAUNCHER
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:26:13-73
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:26:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:29:7-84
+	android:name
+		ADDED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:29:17-81
+android:uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+IMPLIED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:1:1-32:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+android:uses-permission#android.permission.READ_PHONE_STATE
+IMPLIED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:1:1-32:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+android:uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from C:\BuhtaWms2017\WmsAndroid\android\app\src\main\AndroidManifest.xml:1:1-32:12 reason: org.webkit.android_jsc requested WRITE_EXTERNAL_STORAGE
+uses-permission#android.permission.RECORD_AUDIO
+ADDED from [BuhtaWMS:VoiceModule:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\VoiceModule\unspecified\AndroidManifest.xml:13:5-71
+	android:name
+		ADDED from [BuhtaWMS:VoiceModule:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\VoiceModule\unspecified\AndroidManifest.xml:13:22-68
+uses-permission#android.permission.CAMERA
+ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:11:5-65
+	android:name
+		ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:11:22-62
+uses-feature#android.hardware.camera
+ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:13:5-15:36
+	android:required
+		ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:15:9-33
+	android:name
+		ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:14:9-47
+uses-feature#android.hardware.camera.front
+ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:16:5-18:36
+	android:required
+		ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:18:9-33
+	android:name
+		ADDED from [BuhtaWMS:react-native-barcodescanner:unspecified] C:\BuhtaWms2017\WmsAndroid\android\app\build\intermediates\exploded-aar\BuhtaWMS\react-native-barcodescanner\unspecified\AndroidManifest.xml:17:9-53
