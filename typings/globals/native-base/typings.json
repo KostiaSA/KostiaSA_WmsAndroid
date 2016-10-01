@@ -1,0 +1,9 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/mrphu3074/typed-native-base/cf8cffbc134055490f8fbdd5ae705b42a704c7d8/typings.json",
+    "raw": "github:mrphu3074/typed-native-base#cf8cffbc134055490f8fbdd5ae705b42a704c7d8",
+    "name": "native-base",
+    "type": "typings"
+  }
+}
